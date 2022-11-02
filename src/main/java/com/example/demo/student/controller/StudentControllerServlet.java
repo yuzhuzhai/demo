@@ -1,4 +1,7 @@
-package com.example.demo;
+package com.example.demo.student.controller;
+
+import com.example.demo.student.model.Student;
+import com.example.demo.student.dao.StudentDaoImpl;
 
 import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
@@ -18,7 +21,7 @@ import java.util.List;
 public class StudentControllerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private com.example.demo.StudentDbUtil studentDbUtil;
+	private StudentDaoImpl studentDaoImpl;
 
 	@Resource(name="jdbc/web_student_tracker")
 	private DataSource dataSource;
@@ -29,7 +32,7 @@ public class StudentControllerServlet extends HttpServlet {
 
 		// create our student db util ... and pass in the conn pool / datasource
 		try {
-			studentDbUtil = new com.example.demo.StudentDbUtil(dataSource);
+			studentDaoImpl = new StudentDaoImpl(dataSource);
 		}
 		catch (Exception exc) {
 			throw new ServletException(exc);
@@ -88,7 +91,7 @@ public class StudentControllerServlet extends HttpServlet {
 		String theStudentId = request.getParameter("studentId");
 
 		// delete student from database
-		studentDbUtil.deleteStudent(theStudentId);
+		studentDaoImpl.deleteStudent(theStudentId);
 
 		// send them back to "list students" page
 		listStudents(request, response);
@@ -107,7 +110,7 @@ public class StudentControllerServlet extends HttpServlet {
 		Student theStudent = new Student(id, firstName, lastName, email);
 
 		// perform update on database
-		studentDbUtil.updateStudent(theStudent);
+		studentDaoImpl.updateStudent(theStudent);
 
 		// send them back to the "list students" page
 		listStudents(request, response);
@@ -121,7 +124,7 @@ public class StudentControllerServlet extends HttpServlet {
 		String theStudentId = request.getParameter("studentId");
 
 		// get student from database (db util)
-		Student theStudent = studentDbUtil.getStudent(theStudentId);
+		Student theStudent = studentDaoImpl.getStudent(theStudentId);
 
 		// place student in the request attribute
 		request.setAttribute("THE_STUDENT", theStudent);
@@ -143,7 +146,7 @@ public class StudentControllerServlet extends HttpServlet {
 		Student theStudent = new Student(firstName, lastName, email);
 
 		// add the student to the database
-		studentDbUtil.addStudent(theStudent);
+		studentDaoImpl.addStudent(theStudent);
 
 		// send back to main page (the student list)
 		listStudents(request, response);
@@ -153,7 +156,7 @@ public class StudentControllerServlet extends HttpServlet {
 		throws Exception {
 
 		// get students from db util
-		List<Student> students = studentDbUtil.getStudents();
+		List<Student> students = studentDaoImpl.getStudents();
 
 		// add students to the request
 		request.setAttribute("STUDENT_LIST", students);
