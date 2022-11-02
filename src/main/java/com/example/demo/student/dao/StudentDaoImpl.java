@@ -1,4 +1,6 @@
-package com.example.demo;
+package com.example.demo.student.dao;
+
+import com.example.demo.student.model.Student;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -8,11 +10,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentDbUtil {
+public class StudentDaoImpl {
 
 	private DataSource dataSource;
 
-	public StudentDbUtil(DataSource theDataSource) {
+	public StudentDaoImpl(DataSource theDataSource) {
 		dataSource = theDataSource;
 	}
 
@@ -220,6 +222,7 @@ public class StudentDbUtil {
 			close(myConn, myStmt, null);
 		}
 	}
+
 }
 
 
