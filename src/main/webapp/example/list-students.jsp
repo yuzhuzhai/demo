@@ -6,7 +6,7 @@
 <head>
 	<title>Student Tracker App</title>
 	
-	<link type="text/css" rel="stylesheet" href="css/style.css">
+	<link type="text/css" rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
