@@ -1,5 +1,6 @@
 package com.example.demo.student.controller;
 
+import com.example.demo.course.model.Course;
 import com.example.demo.student.model.Student;
 import com.example.demo.student.dao.StudentDaoImpl;
 
@@ -30,7 +31,7 @@ public class StudentControllerServlet extends HttpServlet {
 	public void init() throws ServletException {
 		super.init();
 
-		// create our student db util ... and pass in the conn pool / datasource
+		// create student dao implementation ... and pass in the conn pool / datasource
 		try {
 			studentDaoImpl = new StudentDaoImpl(dataSource);
 		}
@@ -155,7 +156,7 @@ public class StudentControllerServlet extends HttpServlet {
 	private void listStudents(HttpServletRequest request, HttpServletResponse response)
 		throws Exception {
 
-		// get students from db util
+		// get students from dao implementation
 		List<Student> students = studentDaoImpl.getStudents();
 
 		// add students to the request
@@ -163,6 +164,20 @@ public class StudentControllerServlet extends HttpServlet {
 
 		// send to JSP page (view)
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/list-students.jsp");
+		dispatcher.forward(request, response);
+	}
+
+	private void listStudentsByCourse(HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+
+		String courseName = request.getParameter("courseName");
+
+		List<Student> students = studentDaoImpl.getStudentsByCourse(courseName);
+
+		request.setAttribute("STUDENT_LIST_BY_COURSE", students);
+
+		// send to JSP page (view)
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/admin-list-student.jsp");
 		dispatcher.forward(request, response);
 	}
 
