@@ -1,8 +1,7 @@
 package com.example.demo.student.controller;
 
-import com.example.demo.course.model.Course;
-import com.example.demo.student.model.Student;
 import com.example.demo.student.dao.StudentDaoImpl;
+import com.example.demo.student.model.Student;
 
 import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
@@ -24,7 +23,7 @@ public class StudentControllerServlet extends HttpServlet {
 
 	private StudentDaoImpl studentDaoImpl;
 
-	@Resource(name="jdbc/web_student_tracker")
+	@Resource(name="jdbc/products")
 	private DataSource dataSource;
 
 	@Override
@@ -172,9 +171,9 @@ public class StudentControllerServlet extends HttpServlet {
 
 		String courseName = request.getParameter("courseName");
 
-		List<Student> students = studentDaoImpl.getStudentsByCourse(courseName);
+		//List<Student> students = studentDaoImpl.getStudentsByCourse(courseName);
 
-		request.setAttribute("STUDENT_LIST_BY_COURSE", students);
+		//request.setAttribute("STUDENT_LIST_BY_COURSE", students);
 
 		// send to JSP page (view)
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/admin-list-student.jsp");

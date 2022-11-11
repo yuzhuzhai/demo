@@ -1,0 +1,280 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: zfq11
+  Date: 11/11/2022
+  Time: 5:43 PM
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta http-equiv="x-ua-compatible" content="ie=edge"/>
+    <title>Assignment 2</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+    <!-- Google Fonts Roboto -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap"/>
+    <!-- MDB -->
+    <link rel="stylesheet" href="./css/mdb.min.css"/>
+    <link rel="stylesheet" href="./css/style2.css"/>
+    <style type="text/css">
+        .nav-item {
+            flex-basis: 0;
+            flex-grow: 1;
+            text-align: center;
+            justify-content: space-around;
+            display: flex;
+        }
+    </style>
+</head>
+<!-- MDB -->
+<script type="text/javascript" src="./js/mdb.min.js"></script>
+<!-- Custom scripts -->
+<script type="text/javascript"></script>
+<body>
+<section class="intro">
+    <div class="bg-image h-100"
+         style="background-image: url('https://mdbootstrap.com/img/Photos/new-templates/glassmorphism-article/img5.jpg');">
+        <div class="mask d-flex align-items-center h-100">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-10 col-lg-7 col-xl-6">
+                        <div class="card mask-custom">
+                            <div class="card-body p-5 text-white">
+
+                                <div class="my-4">
+
+                                    <h2 class="text-center mb-5">Enrollment System</h2>
+
+                                    <!-- Pills navs -->
+                                    <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link active"
+                                                    id="tab-login"
+                                                    data-mdb-toggle="pill"
+                                                    role="tab"
+                                                    aria-controls="pills-login"
+                                                    aria-selected="true"
+                                                    onclick="openTab(event, 'Login')">
+                                                Student
+                                            </button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link"
+                                                    id="tab-register"
+                                                    data-mdb-toggle="pill"
+                                                    role="tab"
+                                                    aria-controls="pills-register"
+                                                    aria-selected="false"
+                                                    onclick="openTab(event, 'Register')">
+                                                Administer
+                                            </button>
+                                        </li>
+                                    </ul>
+                                    <!-- Pills navs -->
+                                    <!-- Pills content -->
+                                    <div class="tab-content">
+                                        <div class="tab-pane" id="Login" role="tabpanel" aria-labelledby="tab-login">
+
+                                            <form method="post" id="form1">
+
+                                                <p class="text-center">Enter student ID</p>
+
+                                                <!-- Student ID input -->
+                                                <div class="form-outline mb-4">
+                                                    <input type="number" id="loginName" name="stdID"
+                                                           class="form-control" required/>
+                                                    <label class="form-label" for="loginName">Student ID</label>
+                                                </div>
+                                                <p class="text-center" id="errorMessage"></p>
+                                                <p class="text-center">Select the semester</p>
+                                                <link rel=" stylesheet" href="align_lines.css"/>
+                                                <body>
+                                                <div class=" main" id="radiobox">
+                                                    <input type="radio" id="first" name="semester" value="Fall">
+                                                    <div class="first" label for="first" p style="color:black;">Fall
+                                                        Term</p></div>
+                                                    <input type="radio" id="second" name="semester" value="Winter">
+                                                    <div class="second" label for="second" p style="color:black;">Winter
+                                                        Term</p></div>
+                                                    <input type="radio" id="third" name="semester" value="Summer">
+                                                    <div class="third" label for="third" p style="color:black;">Summer
+                                                        Term</p></div>
+                                                </div>
+                                                </body>
+                                                <button type="button" class="btn btn-primary btn-block mb-4"
+                                                        onClick="validation('courses.php')">Add a course
+                                                </button>
+                                                <button type="button" class="btn btn-primary btn-block mb-4"
+                                                        onClick="validation('coursesDrop.php')">Drop a course
+                                                </button>
+                                            </form>
+
+                                            <!-- select course button -->
+                                            <!-- <form method="post" action="coursesDrop.php"> -->
+                                            <!-- </form> -->
+                                        </div>
+                                        <div class="tab-pane" id="Register" role="tabpanel"
+                                             aria-labelledby="tab-register">
+                                            <form action="CourseControllerServlet" method="POST">
+                                                <input type="hidden" name="command" value="ADD" />
+
+                                                <p class="text-center">Add new Course Information</p>
+
+
+                                                <div class="form-outline mb-4">
+                                                    <div class="form-outline form-white">
+                                                        <input name="ID" type="text" class="form-control"/>
+                                                        <label class="form-label" >CourseID</label>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Name input -->
+                                                <div class="form-outline mb-4">
+                                                    <div class="form-outline form-white">
+                                                        <input name="Title" type="text" class="form-control"/>
+                                                        <label class="form-label" >Title</label>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Username input -->
+                                                <div class="form-outline mb-4">
+                                                    <div class="form-outline form-white">
+                                                        <input name="Semester" type="text" class="form-control"/>
+                                                        <label class="form-label"
+                                                               >Semester</label>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Email input -->
+                                                <div class="form-outline mb-4">
+                                                    <div class="form-outline form-white">
+                                                        <input name="Days" type="text" class="form-control"/>
+                                                        <label class="form-label">Days</label>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Password input -->
+                                                <div class="form-outline mb-4">
+                                                    <div class="form-outline form-white">
+                                                        <input name="Time" type="text" id="registerPassword"
+                                                               class="form-control"/>
+                                                        <label class="form-label" for="registerPassword">Time</label>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Repeat Password input -->
+                                                <div class="form-outline mb-4">
+                                                    <div class="form-outline form-white">
+                                                        <input name="Instructor" type="text" class="form-control"/>
+                                                        <label class="form-label" >Instructor</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-outline mb-4">
+                                                    <div class="form-outline form-white">
+                                                        <input name="Room" type="text" class="form-control"/>
+                                                        <label class="form-label"
+                                                               >Room</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-outline mb-4">
+                                                    <div class="form-outline form-white">
+                                                        <input name="StartDate" type="text" class="form-control"/>
+                                                        <label class="form-label" >Start
+                                                            Date</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-outline mb-4">
+                                                    <div class="form-outline form-white">
+                                                        <input name="EndDate" type="text" class="form-control"/>
+                                                        <label class="form-label" >End
+                                                            Date</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-outline mb-4">
+                                                    <div class="form-outline form-white">
+                                                        <input name="AdminId" type="text" class="form-control"/>
+                                                        <label class="form-label" >Admin
+                                                            ID</label>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Submit button -->
+                                                <button type="submit" class="btn btn-primary btn-block mb-3">Add
+                                                    course
+                                                </button>
+                                                <div class="text-center">
+                                                    <p>Go to <a href="/SOEN387_Assignment_1/report.html">Report
+                                                        System</a></p>
+                                                </div>
+                                            </form>
+
+
+                                        </div>
+                                    </div>
+                                    <!-- Pills content -->
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+<script>
+    function openTab(evt, name) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tab-pane");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("nav-link");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(name).style.display = "block";
+        evt.currentTarget.className += " fade show active";
+    }
+
+    function validation(action) {
+        var input = document.getElementById("loginName");
+        var form = document.getElementById("form1");
+        var radiobox1 = document.getElementById("first");
+        var radiobox2 = document.getElementById("second");
+        var radiobox3 = document.getElementById("third");
+        var radioboxArray = [radiobox1, radiobox2, radiobox3];
+        var checked = false;
+        for (var i = 0; i < radioboxArray.length; i++) {
+            if (radioboxArray[0].checked) {
+                checked = true;
+            }
+        }
+        if (!checked) {
+            document.getElementById("errorMessage").innerHTML = "Please select a semester";
+            return;
+        }
+
+        if (!input.checkValidity()) {
+            document.getElementById("errorMessage").innerHTML = input.validationMessage;
+        } else {
+            form.action = action;
+            form.submit();
+        }
+    }
+</script>
+</html>
+

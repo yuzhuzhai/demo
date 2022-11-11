@@ -1,7 +1,6 @@
 package com.example.demo.course.dao;
 
 import com.example.demo.course.model.Course;
-import com.example.demo.student.model.Student;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -48,8 +47,68 @@ public class CourseDaoImpl {
                 String days = myRs.getString("days");
                 String time = myRs.getString("time");
                 String instructor = myRs.getString("instructor");
+                String room = myRs.getString("room");
+                String startDate = myRs.getString("startDate");
+                String endDate = myRs.getString("endDate");
+                String adminID = myRs.getString("adminID");
 
-                Course tempCourse = new Course(id, title, semester, days, time, instructor);
+
+
+
+                Course tempCourse = new Course(id, title,semester,days,time,instructor,room,startDate,endDate,adminID);
+
+                // add it to the list of students
+                courses.add(tempCourse);
+            }
+
+            return courses;
+        }
+        finally {
+            // close JDBC objects
+            close(myConn, myStmt, myRs);
+        }
+    }
+
+
+    public List<Course> getCoursesByStudent(int studentId) throws Exception {
+
+        List<Course> courses = new ArrayList<>();
+
+        Connection myConn = null;
+        Statement myStmt = null;
+        ResultSet myRs = null;
+
+        try {
+            // get a connection
+            myConn = dataSource.getConnection();
+
+            // create sql statement
+            String sql = "select * from course order by title";
+
+            myStmt = myConn.createStatement();
+
+            // execute query
+            myRs = myStmt.executeQuery(sql);
+
+            // process result set
+            while (myRs.next()) {
+
+                // retrieve data from result set row
+                int id = myRs.getInt("id");
+                String title = myRs.getString("title");
+                String semester = myRs.getString("semester");
+                String days = myRs.getString("days");
+                String time = myRs.getString("time");
+                String instructor = myRs.getString("instructor");
+                String room = myRs.getString("room");
+                String startDate = myRs.getString("startDate");
+                String endDate = myRs.getString("endDate");
+                String adminID = myRs.getString("adminID");
+
+
+
+
+                Course tempCourse = new Course(id, title,semester,days,time,instructor,room,startDate,endDate,adminID);
 
                 // add it to the list of students
                 courses.add(tempCourse);
@@ -98,6 +157,43 @@ public class CourseDaoImpl {
                     studentIdValue + "," +
                     courseIdValue +
                     ")";
+
+            myStmt = myConn.prepareStatement(sql);
+
+            // execute sql insert
+            myStmt.execute();
+        }
+        finally {
+            // clean up JDBC objects
+            close(myConn, myStmt, null);
+        }
+    }
+
+    public void addCourse(Course theCourse) throws Exception {
+
+        Connection myConn = null;
+        PreparedStatement myStmt = null;
+
+        try {
+            // get db connection
+            myConn = dataSource.getConnection();
+
+            // create sql for insert
+            String sql = "INSERT INTO course (ID,title,semester,days,time,instructor,room,startDate,endDate,adminID) " +
+                    "VALUES (?,?,?,?,?,?,?,?,?,?)";
+
+            myStmt.setInt(1, theCourse.getID());
+            myStmt.setString(2, theCourse.getTitle());
+            myStmt.setString(3, theCourse.getSemester());
+            myStmt.setString(4, theCourse.getDays());
+            myStmt.setString(5, theCourse.getTime());
+            myStmt.setString(6, theCourse.getInstructor());
+            myStmt.setString(7, theCourse.getRoom());
+            myStmt.setString(8, theCourse.getStartDate());
+            myStmt.setString(9, theCourse.getEndDate());
+            myStmt.setString(10, theCourse.getAdminID());
+
+
 
             myStmt = myConn.prepareStatement(sql);
 
@@ -172,10 +268,10 @@ public class CourseDaoImpl {
                 String instructor = myRs.getString("instructor");
 
                 // create new student object
-                Course tempCourse = new Course(id, title, semester, days, time, instructor);
+                Course tempCourse = null;
 
                 // add it to the list of students
-                courses.add(tempCourse);
+                //courses.add(tempCourse);
             }
 
             return courses;
@@ -218,10 +314,10 @@ public class CourseDaoImpl {
                 String semester = myRs.getString("semester");
 
                 // create new student object
-                Course tempCourse = new Course(id, title, semester);
+                //Course tempCourse = new Course(id, title, semester);
 
                 // add it to the list of students
-                courses.add(tempCourse);
+                //courses.add(tempCourse);
             }
 
             return courses;

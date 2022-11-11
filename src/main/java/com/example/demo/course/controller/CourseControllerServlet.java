@@ -23,7 +23,7 @@ public class CourseControllerServlet extends HttpServlet {
     private CourseDaoImpl courseDaoImpl;
     public Logger logger;
 
-    @Resource(name="jdbc/web_student_tracker")
+    @Resource(name="jdbc/products")
     private DataSource dataSource;
 
     @Override
@@ -93,9 +93,19 @@ public class CourseControllerServlet extends HttpServlet {
 
     private void addCourse(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        String courseName = request.getParameter("courseName");
+        int id = Integer.parseInt(request.getParameter("id"));
+        String title = request.getParameter("title");
+        String semester = request.getParameter("semester");
+        String days = request.getParameter("days");
+        String time = request.getParameter("time");
+        String instructor = request.getParameter("instructor");
+        String room = request.getParameter("room");
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
+        String adminID = request.getParameter("adminID");
 
-        Course theCourse = new Course(courseName);
+
+        Course theCourse = new Course(id, title,semester,days,time,instructor,room,startDate,endDate,adminID);
 
         courseDaoImpl.addCourse(theCourse);
 
@@ -118,9 +128,9 @@ public class CourseControllerServlet extends HttpServlet {
     private void listCoursesByStudent(HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        String courseName = request.getParameter("courseName");
+        int studentId = Integer.parseInt(request.getParameter("id"));
 
-        List<Course> courses = courseDaoImpl.getCoursesByStudent(courseName);
+        List<Course> courses = courseDaoImpl.getCoursesByStudent(studentId);
 
         request.setAttribute("COURSE_LIST", courses);
 
