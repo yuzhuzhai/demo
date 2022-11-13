@@ -20,10 +20,11 @@ import java.util.logging.Logger;
  */
 @WebServlet("/CourseControllerServlet")
 public class CourseControllerServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
     private CourseDaoImpl courseDaoImpl;
     public Logger logger;
 
-    @Resource(name="jdbc/products")
+    @Resource(name="jdbc/web_student_tracker")
     private DataSource dataSource;
 
     @Override
@@ -93,19 +94,19 @@ public class CourseControllerServlet extends HttpServlet {
 
     private void addCourse(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        int id = Integer.parseInt(request.getParameter("id"));
-        String title = request.getParameter("title");
-        String semester = request.getParameter("semester");
-        String days = request.getParameter("days");
-        String time = request.getParameter("time");
-        String instructor = request.getParameter("instructor");
-        String room = request.getParameter("room");
-        String startDate = request.getParameter("startDate");
-        String endDate = request.getParameter("endDate");
-        String adminID = request.getParameter("adminID");
+        int ID = Integer.parseInt(request.getParameter("ID"));
+        String title = request.getParameter("Title");
+        String semester = request.getParameter("Semester");
+        String days = request.getParameter("Days");
+        String time = request.getParameter("Time");
+        String instructor = request.getParameter("Instructor");
+        String room = request.getParameter("Room");
+        String startDate = request.getParameter("StartDate");
+        String endDate = request.getParameter("EndDate");
+        int adminID = Integer.parseInt(request.getParameter("AdminId"));
 
 
-        Course theCourse = new Course(id, title,semester,days,time,instructor,room,startDate,endDate,adminID);
+        Course theCourse = new Course(ID, title,semester,days,time,instructor,room,startDate,endDate,adminID);
 
         courseDaoImpl.addCourse(theCourse);
 

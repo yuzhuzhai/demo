@@ -93,7 +93,7 @@
                                                 </div>
                                                 <p class="text-center" id="errorMessage"></p>
                                                 <p class="text-center">Select the semester</p>
-                                                <link rel=" stylesheet" href="align_lines.css"/>
+                                                <link rel=" stylesheet" href="alignadd.css"/>
                                                 <body>
                                                 <div class=" main" id="radiobox">
                                                     <input type="radio" id="first" name="semester" value="Fall">

@@ -1,7 +1,7 @@
 package com.example.demo.course.model;
 
 public class Course {
-    private int id;
+    private int ID;
     private String title;
     private String semester;
     private String days;
@@ -10,17 +10,17 @@ public class Course {
     private String room;
     private String startDate;
     private String endDate;
-    private String adminID;
+    private int adminID;
 
     public String getTitle() {
         return title;
     }
     public int getID() {
-        return id;
+        return ID;
     }
 
-    public void setID(int id) {
-        this.id = id;
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     public void setTitle(String title) {
@@ -83,18 +83,18 @@ public class Course {
         this.endDate = endDate;
     }
 
-    public String getAdminID() {
+    public int getAdminID() {
         return adminID;
     }
 
-    public void setAdminID(String adminID) {
+    public void setAdminID(int adminID) {
         this.adminID = adminID;
     }
 
-    public Course(int id, String title, String semester, String days, String time,
+    public Course(int ID, String title, String semester, String days, String time,
                   String instructor, String room, String startDate,
-                  String endDate, String adminID) {
-        this.id=id;        this.title = title;
+                  String endDate, int adminID) {
+        this.ID=ID;        this.title = title;
         this.semester = semester;
         this.days = days;
         this.time = time;
@@ -103,5 +103,21 @@ public class Course {
         this.startDate = startDate;
         this.endDate = endDate;
         this.adminID = adminID;
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "ID=" + ID +
+                ", title='" + title + '\'' +
+                ", semester='" + semester + '\'' +
+                ", days='" + days + '\'' +
+                ", time='" + time + '\'' +
+                ", instructor='" + instructor + '\'' +
+                ", room='" + room + '\'' +
+                ", startDate='" + startDate + '\'' +
+                ", endDate='" + endDate + '\'' +
+                ", adminID=" + adminID +
+                '}';
     }
 }

@@ -9,9 +9,11 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class CourseDaoImpl {
     private DataSource dataSource;
+    public Logger logger;
 
     public CourseDaoImpl(DataSource theDataSource) {
         dataSource = theDataSource;
@@ -50,7 +52,7 @@ public class CourseDaoImpl {
                 String room = myRs.getString("room");
                 String startDate = myRs.getString("startDate");
                 String endDate = myRs.getString("endDate");
-                String adminID = myRs.getString("adminID");
+                int adminID = myRs.getInt("adminID");
 
 
 
@@ -103,7 +105,7 @@ public class CourseDaoImpl {
                 String room = myRs.getString("room");
                 String startDate = myRs.getString("startDate");
                 String endDate = myRs.getString("endDate");
-                String adminID = myRs.getString("adminID");
+                int adminID = myRs.getInt("adminID");
 
 
 
@@ -170,7 +172,7 @@ public class CourseDaoImpl {
     }
 
     public void addCourse(Course theCourse) throws Exception {
-
+        System.out.println(theCourse.getID());
         Connection myConn = null;
         PreparedStatement myStmt = null;
 
@@ -181,6 +183,7 @@ public class CourseDaoImpl {
             // create sql for insert
             String sql = "INSERT INTO course (ID,title,semester,days,time,instructor,room,startDate,endDate,adminID) " +
                     "VALUES (?,?,?,?,?,?,?,?,?,?)";
+            myStmt = myConn.prepareStatement(sql);
 
             myStmt.setInt(1, theCourse.getID());
             myStmt.setString(2, theCourse.getTitle());
@@ -191,11 +194,11 @@ public class CourseDaoImpl {
             myStmt.setString(7, theCourse.getRoom());
             myStmt.setString(8, theCourse.getStartDate());
             myStmt.setString(9, theCourse.getEndDate());
-            myStmt.setString(10, theCourse.getAdminID());
+            myStmt.setInt(10, theCourse.getAdminID());
 
 
 
-            myStmt = myConn.prepareStatement(sql);
+
 
             // execute sql insert
             myStmt.execute();
