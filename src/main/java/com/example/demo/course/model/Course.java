@@ -1,5 +1,8 @@
 package com.example.demo.course.model;
 
+
+import java.util.Date;
+
 public class Course {
     private int ID;
     private String title;
@@ -8,8 +11,8 @@ public class Course {
     private String time;
     private String instructor;
     private String room;
-    private String startDate;
-    private String endDate;
+    private Date startDate;
+    private Date endDate;
     private int adminID;
 
     public String getTitle() {
@@ -67,19 +70,19 @@ public class Course {
         this.room = room;
     }
 
-    public String getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public String getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
@@ -92,8 +95,8 @@ public class Course {
     }
 
     public Course(int ID, String title, String semester, String days, String time,
-                  String instructor, String room, String startDate,
-                  String endDate, int adminID) {
+                  String instructor, String room, Date startDate,
+                  Date endDate, int adminID) {
         this.ID=ID;        this.title = title;
         this.semester = semester;
         this.days = days;

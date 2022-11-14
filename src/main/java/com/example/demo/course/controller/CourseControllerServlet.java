@@ -1,7 +1,7 @@
 package com.example.demo.course.controller;
 
-import com.example.demo.course.model.Course;
 import com.example.demo.course.dao.CourseDaoImpl;
+import com.example.demo.course.model.Course;
 
 import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -101,8 +103,12 @@ public class CourseControllerServlet extends HttpServlet {
         String time = request.getParameter("Time");
         String instructor = request.getParameter("Instructor");
         String room = request.getParameter("Room");
-        String startDate = request.getParameter("StartDate");
-        String endDate = request.getParameter("EndDate");
+        System.out.println(request.getParameter("StartDate"));
+        System.out.println(new SimpleDateFormat("yyyy/MM/dd").parse(request.getParameter("StartDate")));
+        Date startDate = new SimpleDateFormat("yyyy/MM/dd").parse(request.getParameter("StartDate"));
+        System.out.println(startDate);
+        Date endDate = new SimpleDateFormat("yyyy/MM/dd").parse(request.getParameter("EndDate"));
+
         int adminID = Integer.parseInt(request.getParameter("AdminId"));
 
 
