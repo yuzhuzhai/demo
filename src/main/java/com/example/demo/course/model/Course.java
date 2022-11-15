@@ -1,39 +1,29 @@
 package com.example.demo.course.model;
 
+
+import java.util.Date;
+
 public class Course {
-    private int id;
+    private int ID;
     private String title;
     private String semester;
     private String days;
     private String time;
     private String instructor;
-
-    public Course(int id, String title, String semester, String days,
-                  String time, String instructor) {
-        this.id = id;
-        this.title = title;
-        this.semester = semester;
-        this.days = days;
-        this.time = time;
-        this.instructor = instructor;
-    }
-
-    public Course(int id, String title, String semester) {
-        this.id = id;
-        this.title = title;
-        this.semester = semester;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+    private String room;
+    private Date startDate;
+    private Date endDate;
+    private int adminID;
 
     public String getTitle() {
         return title;
+    }
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     public void setTitle(String title) {
@@ -70,5 +60,67 @@ public class Course {
 
     public void setInstructor(String instructor) {
         this.instructor = instructor;
+    }
+
+    public String getRoom() {
+        return room;
+    }
+
+    public void setRoom(String room) {
+        this.room = room;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public int getAdminID() {
+        return adminID;
+    }
+
+    public void setAdminID(int adminID) {
+        this.adminID = adminID;
+    }
+
+    public Course(int ID, String title, String semester, String days, String time,
+                  String instructor, String room, Date startDate,
+                  Date endDate, int adminID) {
+        this.ID=ID;        this.title = title;
+        this.semester = semester;
+        this.days = days;
+        this.time = time;
+        this.instructor = instructor;
+        this.room = room;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.adminID = adminID;
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "ID=" + ID +
+                ", title='" + title + '\'' +
+                ", semester='" + semester + '\'' +
+                ", days='" + days + '\'' +
+                ", time='" + time + '\'' +
+                ", instructor='" + instructor + '\'' +
+                ", room='" + room + '\'' +
+                ", startDate='" + startDate + '\'' +
+                ", endDate='" + endDate + '\'' +
+                ", adminID=" + adminID +
+                '}';
     }
 }
