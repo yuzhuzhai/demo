@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -100,7 +101,7 @@ public class CourseControllerServlet extends HttpServlet {
         String title = request.getParameter("Title");
         String semester = request.getParameter("Semester");
         String days = request.getParameter("Days");
-        String time = request.getParameter("Time");
+        Timestamp time = request.getParameter("Time");
         String instructor = request.getParameter("Instructor");
         String room = request.getParameter("Room");
         System.out.println(request.getParameter("StartDate"));

@@ -3,10 +3,7 @@ package com.example.demo.course.dao;
 import com.example.demo.course.model.Course;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,7 +46,7 @@ public class CourseDaoImpl {
                 String title = myRs.getString("title");
                 String semester = myRs.getString("semester");
                 String days = myRs.getString("days");
-                String time = myRs.getString("time");
+                Timestamp time = myRs.getTimestamp("time");
                 String instructor = myRs.getString("instructor");
                 String room = myRs.getString("room");
                 Date startDate = myRs.getDate("startDate");
@@ -102,7 +99,7 @@ public class CourseDaoImpl {
                 String title = myRs.getString("title");
                 String semester = myRs.getString("semester");
                 String days = myRs.getString("days");
-                String time = myRs.getString("time");
+                Timestamp time = myRs.getTimestamp("time");
                 String instructor = myRs.getString("instructor");
                 String room = myRs.getString("room");
 
@@ -189,7 +186,7 @@ public class CourseDaoImpl {
             myStmt.setString(2, theCourse.getTitle());
             myStmt.setString(3, theCourse.getSemester());
             myStmt.setString(4, theCourse.getDays());
-            myStmt.setString(5, theCourse.getTime());
+            myStmt.setTimestamp(5, theCourse.getTime());
             myStmt.setString(6, theCourse.getInstructor());
             myStmt.setString(7, theCourse.getRoom());
             myStmt.setDate(8,
