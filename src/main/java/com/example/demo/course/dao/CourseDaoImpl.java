@@ -54,8 +54,6 @@ public class CourseDaoImpl {
                 int adminID = myRs.getInt("adminID");
 
 
-
-
                 Course tempCourse = new Course(id, title,semester,days,time,instructor,room,startDate,endDate,adminID);
 
                 // add it to the list of students
