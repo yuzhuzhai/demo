@@ -53,16 +53,16 @@ public class CourseDaoImpl {
                 Date endDate = myRs.getDate("endDate");
                 int adminID = myRs.getInt("adminID");
 
-
-                Course tempCourse = new Course(id, title,semester,days,time,instructor,room,startDate,endDate,adminID);
+                Course tempCourse =
+                        new Course(id, title, semester, days, time, instructor,
+                                room, startDate, endDate, adminID);
 
                 // add it to the list of students
                 courses.add(tempCourse);
             }
 
             return courses;
-        }
-        finally {
+        } finally {
             // close JDBC objects
             close(myConn, myStmt, myRs);
         }
@@ -74,7 +74,7 @@ public class CourseDaoImpl {
         List<Course> courses = new ArrayList<>();
 
         Connection myConn = null;
-        Statement myStmt = null;
+        PreparedStatement myStmt = null;
         ResultSet myRs = null;
 
         try {
@@ -82,12 +82,14 @@ public class CourseDaoImpl {
             myConn = dataSource.getConnection();
 
             // create sql statement
-            String sql = "select * from course order by title";
+            String sql =
+                    "SELECT course.title, course.instructor,registration.courseID FROM registration join course where course.ID =registration.courseID and registration.studentID = ?";
 
-            myStmt = myConn.createStatement();
+            myStmt = myConn.prepareStatement(sql);
+            myStmt.setInt(1, studentId);
 
             // execute query
-            myRs = myStmt.executeQuery(sql);
+            myRs = myStmt.executeQuery();
 
             // process result set
             while (myRs.next()) {
@@ -100,20 +102,20 @@ public class CourseDaoImpl {
                 Timestamp time = myRs.getTimestamp("time");
                 String instructor = myRs.getString("instructor");
                 String room = myRs.getString("room");
-
                 Date startDate = myRs.getDate("startDate");
                 Date endDate = myRs.getDate("endDate");
                 int adminID = myRs.getInt("adminID");
 
-                Course tempCourse = new Course(id, title,semester,days,time,instructor,room,startDate,endDate,adminID);
+                Course tempCourse =
+                        new Course(id, title, semester, days, time, instructor,
+                                room, startDate, endDate, adminID);
 
                 // add it to the list of students
                 courses.add(tempCourse);
             }
 
             return courses;
-        }
-        finally {
+        } finally {
             // close JDBC objects
             close(myConn, myStmt, myRs);
         }
@@ -133,13 +135,13 @@ public class CourseDaoImpl {
             if (myConn != null) {
                 myConn.close();   // doesn't really close it ... just puts back in connection pool
             }
-        }
-        catch (Exception exc) {
+        } catch (Exception exc) {
             exc.printStackTrace();
         }
     }
 
-    public void addRegistrationCourse(int studentIdValue, int courseIdValue) throws Exception {
+    public void addRegistrationCourse(int studentIdValue, int courseIdValue)
+            throws Exception {
 
         Connection myConn = null;
         PreparedStatement myStmt = null;
@@ -159,8 +161,7 @@ public class CourseDaoImpl {
 
             // execute sql insert
             myStmt.execute();
-        }
-        finally {
+        } finally {
             // clean up JDBC objects
             close(myConn, myStmt, null);
         }
@@ -176,8 +177,9 @@ public class CourseDaoImpl {
             myConn = dataSource.getConnection();
 
             // create sql for insert
-            String sql = "INSERT INTO course (ID,title,semester,days,time,instructor,room,startDate,endDate,adminID) " +
-                    "VALUES (?,?,?,?,?,?,?,?,?,?)";
+            String sql =
+                    "INSERT INTO course (ID,title,semester,days,time,instructor,room,startDate,endDate,adminID) " +
+                            "VALUES (?,?,?,?,?,?,?,?,?,?)";
             myStmt = myConn.prepareStatement(sql);
 
             myStmt.setInt(1, theCourse.getID());
@@ -188,16 +190,17 @@ public class CourseDaoImpl {
             myStmt.setString(6, theCourse.getInstructor());
             myStmt.setString(7, theCourse.getRoom());
             myStmt.setDate(8,
-                    java.sql.Date.valueOf(theCourse.getStartDate().toInstant().atZone(
+                    java.sql.Date.valueOf(
+                            theCourse.getStartDate().toInstant().atZone(
+                                    ZoneId.systemDefault()).toLocalDate()));
+            myStmt.setDate(9, java.sql.Date.valueOf(
+                    theCourse.getEndDate().toInstant().atZone(
                             ZoneId.systemDefault()).toLocalDate()));
-            myStmt.setDate(9, java.sql.Date.valueOf(theCourse.getEndDate().toInstant().atZone(
-                    ZoneId.systemDefault()).toLocalDate()));
             myStmt.setInt(10, theCourse.getAdminID());
 
             // execute sql insert
             myStmt.execute();
-        }
-        finally {
+        } finally {
             // clean up JDBC objects
             close(myConn, myStmt, null);
         }
@@ -223,15 +226,16 @@ public class CourseDaoImpl {
 
             // execute sql statement
             myStmt.execute();
-        }
-        finally {
+        } finally {
             // clean up JDBC code
             close(myConn, myStmt, null);
         }
     }
 
 
-    public List<Course> getStudentCourseOnSemester(String semesterValue, String stdIdValue) throws Exception {
+    public List<Course> getStudentCourseOnSemester(String semesterValue,
+                                                   String stdIdValue)
+            throws Exception {
 
         List<Course> courses = new ArrayList<>();
 
@@ -244,8 +248,10 @@ public class CourseDaoImpl {
             myConn = dataSource.getConnection();
 
             // create sql statement
-            String sql = "SELECT c.* FROM course c WHERE c.semester = " + semesterValue +
-                    "AND c.ID NOT IN (SELECT courseID FROM registration WHERE studentID = " + stdIdValue
+            String sql = "SELECT c.* FROM course c WHERE c.semester = " +
+                    semesterValue +
+                    "AND c.ID NOT IN (SELECT courseID FROM registration WHERE studentID = " +
+                    stdIdValue
                     + ")";
 
             myStmt = myConn.createStatement();
@@ -272,14 +278,14 @@ public class CourseDaoImpl {
             }
 
             return courses;
-        }
-        finally {
+        } finally {
             // close JDBC objects
             close(myConn, myStmt, myRs);
         }
     }
 
-    public List<Course> getStudentEnrollCourseOnSemester(String studentIdValue) throws Exception {
+    public List<Course> getStudentEnrollCourseOnSemester(String studentIdValue)
+            throws Exception {
 
         List<Course> courses = new ArrayList<>();
 
@@ -295,7 +301,7 @@ public class CourseDaoImpl {
             String sql = "SELECT c.ID, c.title, c.semester, r.id " +
                     "FROM course c, registration r WHERE r.courseID = c.ID" +
                     " AND r.studentID = " +
-                    studentIdValue ;
+                    studentIdValue;
 
             myStmt = myConn.createStatement();
 
@@ -318,8 +324,7 @@ public class CourseDaoImpl {
             }
 
             return courses;
-        }
-        finally {
+        } finally {
             // close JDBC objects
             close(myConn, myStmt, myRs);
         }

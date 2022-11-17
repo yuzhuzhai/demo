@@ -161,6 +161,52 @@ public class StudentDaoImpl {
 		}
 	}
 
+
+	public List<Student> getStudentsByCourse(int courseID) throws Exception {
+
+		List<Student> students = new ArrayList<>();
+
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+		ResultSet myRs = null;
+
+		try {
+			// get a connection
+			myConn = dataSource.getConnection();
+
+			// create sql statement
+			String sql = "SELECT student.firstName, registration.studentID FROM registration join student where student.ID = registration.studentID and registration.courseID = ?";
+
+			myStmt = myConn.prepareStatement(sql);
+			myStmt.setInt(1, courseID);
+
+			// execute query
+			myRs = myStmt.executeQuery();
+
+			// process result set
+			while (myRs.next()) {
+
+				// retrieve data from result set row
+				int id = myRs.getInt("id");
+				String firstName = myRs.getString("first_name");
+				String lastName = myRs.getString("last_name");
+				String email = myRs.getString("email");
+
+				// create new student object
+				Student tempStudent = new Student(id, firstName, lastName, email);
+
+				// add it to the list of students
+				students.add(tempStudent);
+			}
+
+			return students;
+		}
+		finally {
+			// close JDBC objects
+			close(myConn, myStmt, myRs);
+		}
+	}
+
 	public void updateStudent(Student theStudent) throws Exception {
 
 		Connection myConn = null;

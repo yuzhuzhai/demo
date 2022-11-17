@@ -126,10 +126,10 @@ public class CourseControllerServlet extends HttpServlet {
 
         List<Course> courses = courseDaoImpl.getCourses();
 
-        request.setAttribute("COURSE_LIST", courses);
+        request.setAttribute("ALL_COURSE_LIST", courses);
 
         // send to JSP page (view)
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin-list-courses.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin-list-all-course.jsp");
         dispatcher.forward(request, response);
     }
 
@@ -140,10 +140,10 @@ public class CourseControllerServlet extends HttpServlet {
 
         List<Course> courses = courseDaoImpl.getCoursesByStudent(studentId);
 
-        request.setAttribute("COURSE_LIST", courses);
+        request.setAttribute("COURSE_LIST_BY_STUDENT", courses);
 
         // send to JSP page (view)
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin-list-courses.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin-list-student-courses.jsp");
         dispatcher.forward(request, response);
     }
 
