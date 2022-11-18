@@ -67,12 +67,18 @@ public class AuthControllerServlet extends HttpServlet {
 
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+            User user;
         try {
-            int ID = Integer.parseInt(request.getParameter("ID"));
             String name = request.getParameter("Name");
             String password = request.getParameter("Password");
-            User user = new User(ID, name, password);
+            String role = request.getParameter("Role");
+            int id = Integer.parseInt(request.getParameter("ID"));
+            if (role == "student") {
+
+                user = new User( name, password, id, 0);}
+            else {
+                user = new User( name, password, 0, id);
+            }
             authDaoImpl.register(user);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
             dispatcher.forward(request, response);

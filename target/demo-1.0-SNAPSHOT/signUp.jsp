@@ -12,6 +12,7 @@
     <title>new registration</title>
 </head>
 <body>
+<h1> Don't have account or account doesn't exits? please signup before logIn </h1>
 <form action="reg-process.jsp" method="post">
     First name :<input type="text" name="fname" />
     Last name :<input type="text" name="lname" />
