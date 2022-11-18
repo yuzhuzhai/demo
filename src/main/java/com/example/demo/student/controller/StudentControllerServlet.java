@@ -2,6 +2,8 @@ package com.example.demo.student.controller;
 
 import com.example.demo.student.dao.StudentDaoImpl;
 import com.example.demo.student.model.Student;
+import com.example.demo.course.dao.CourseDaoImpl;
+import com.example.demo.course.model.Course;
 
 import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
@@ -22,8 +24,9 @@ public class StudentControllerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private StudentDaoImpl studentDaoImpl;
+	private CourseDaoImpl courseDaoImpl;
 
-	@Resource(name="jdbc/products")
+	@Resource(name="jdbc/course_management")
 	private DataSource dataSource;
 
 	@Override
@@ -33,6 +36,7 @@ public class StudentControllerServlet extends HttpServlet {
 		// create student dao implementation ... and pass in the conn pool / datasource
 		try {
 			studentDaoImpl = new StudentDaoImpl(dataSource);
+			courseDaoImpl = new CourseDaoImpl(dataSource);
 		}
 		catch (Exception exc) {
 			throw new ServletException(exc);
@@ -69,8 +73,8 @@ public class StudentControllerServlet extends HttpServlet {
 				updateStudent(request, response);
 				break;
 
-			case "DELETE":
-				deleteStudent(request, response);
+			case "DROP":
+				studentDropCourse(request, response);
 				break;
 
 			default:
@@ -121,17 +125,52 @@ public class StudentControllerServlet extends HttpServlet {
 		throws Exception {
 
 		// read student id from form data
-		String theStudentId = request.getParameter("studentId");
+		String theStudentId = request.getParameter("stdID");
+		// read semester id from form data
+		String theSemester = request.getParameter("semester");
 
 		// get student from database (db util)
 		Student theStudent = studentDaoImpl.getStudent(theStudentId);
 
+//		IMPORTANT: check this code later
+		List<Course> theSemesterCourse = courseDaoImpl.getCourses();
+
+
 		// place student in the request attribute
 		request.setAttribute("THE_STUDENT", theStudent);
+		request.setAttribute("THE_SEMESTER", theSemester);
+
+		request.setAttribute("COURSE_LIST", theSemesterCourse);
 
 		// send to jsp page: update-student-form.jsp
 		RequestDispatcher dispatcher =
-				request.getRequestDispatcher("/update-student-form.jsp");
+				request.getRequestDispatcher("/courses.jsp");
+		dispatcher.forward(request, response);
+	}
+
+	private void studentDropCourse(HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+
+		// read student id from form data
+		String theStudentId = request.getParameter("stdID");
+		// read semester id from form data
+		String theSemester = request.getParameter("semester");
+
+		int theStudentIdInt = Integer.parseInt(theStudentId);
+
+		Student theStudent = studentDaoImpl.getStudent(theStudentId);
+
+//		IMPORTANT: check this code later
+		List<Course> enrolledCoursesForTheStudent = courseDaoImpl.getStudentEnrollCourseOnSemester(theStudentIdInt);
+
+		request.setAttribute("THE_STUDENT", theStudent);
+		request.setAttribute("THE_SEMESTER", theSemester);
+
+		request.setAttribute("COURSE_LIST", enrolledCoursesForTheStudent);
+
+		// send to jsp page: update-student-form.jsp
+		RequestDispatcher dispatcher =
+				request.getRequestDispatcher("/courseDrop.jsp");
 		dispatcher.forward(request, response);
 	}
 

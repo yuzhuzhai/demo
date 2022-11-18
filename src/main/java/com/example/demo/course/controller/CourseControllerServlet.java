@@ -2,6 +2,8 @@ package com.example.demo.course.controller;
 
 import com.example.demo.course.dao.CourseDaoImpl;
 import com.example.demo.course.model.Course;
+import com.example.demo.student.model.Student;
+import com.example.demo.student.dao.StudentDaoImpl;
 
 import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
@@ -24,9 +26,11 @@ import java.util.logging.Logger;
 public class CourseControllerServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private CourseDaoImpl courseDaoImpl;
+
+    private StudentDaoImpl studentDaoImpl;
     public Logger logger;
 
-    @Resource(name="jdbc/web_student_tracker")
+    @Resource(name="jdbc/course_management")
     private DataSource dataSource;
 
     @Override
@@ -86,6 +90,12 @@ public class CourseControllerServlet extends HttpServlet {
                 case "ADD":
                     addCourse(request, response);
                     break;
+                case "REGISTER":
+                    addRegistrationCourse(request, response);
+                    break;
+                case "DROP":
+                    dropCourse(request, response);
+                    break;
             }
 
         }
@@ -118,6 +128,46 @@ public class CourseControllerServlet extends HttpServlet {
 
         // send back to main page (the student list)
         listCourses(request, response);
+    }
+
+    private void dropCourse(HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+
+        String studentIDStr = request.getParameter("stdID");
+        int studentID = Integer.parseInt(studentIDStr);
+        String theSemester = request.getParameter("semester");
+
+        String[] courseIDArr = request.getParameterValues("courseID");
+
+        if(courseIDArr.length != 0){
+            for(String courseIDStr: courseIDArr){
+                int courseID = Integer.parseInt(courseIDStr.trim());
+                courseDaoImpl.dropCourse(studentID, courseID);
+            }
+        }
+
+        List<Course> enrolledCoursesForTheStudent = courseDaoImpl.getStudentEnrollCourseOnSemester(studentID);
+
+        request.setAttribute("COURSE_LIST", enrolledCoursesForTheStudent);
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/drop.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    private void addRegistrationCourse(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        // read student info from form data
+        int studentID = Integer.parseInt(request.getParameter("stdID"));
+        String[] courseIDArr = request.getParameterValues("courseID");
+        for(String courseIDStr: courseIDArr){
+            int courseID = Integer.parseInt(courseIDStr.trim());
+            courseDaoImpl.addRegistrationCourse(studentID,courseID);
+        }
+        List<Course> enrolledCoursesForTheStudent = courseDaoImpl.getStudentEnrollCourseOnSemester(studentID);
+        request.setAttribute("ENROLLED_COURSE_LIST", enrolledCoursesForTheStudent);
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/register.jsp");
+        dispatcher.forward(request, response);
     }
 
     private void listCourses(HttpServletRequest request, HttpServletResponse response)

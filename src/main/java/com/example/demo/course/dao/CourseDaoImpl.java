@@ -208,7 +208,7 @@ public class CourseDaoImpl {
         }
     }
 
-    public void DropRegistrationCourse(int courseIdValue) throws Exception {
+    public void dropCourse(int studentValue, int courseIdValue) throws Exception {
 
         Connection myConn = null;
         PreparedStatement myStmt = null;
@@ -218,13 +218,14 @@ public class CourseDaoImpl {
             myConn = dataSource.getConnection();
 
             // create sql to delete student
-            String sql = "delete from student where id=?";
+            String sql = "delete from registration where studentID=? AND courseID=?";
 
             // prepare statement
             myStmt = myConn.prepareStatement(sql);
 
             // set params
-            myStmt.setInt(1, courseIdValue);
+            myStmt.setInt(1, studentValue);
+            myStmt.setInt(2, courseIdValue);
 
             // execute sql statement
             myStmt.execute();
@@ -284,12 +285,12 @@ public class CourseDaoImpl {
         }
     }
 
-    public List<Course> getStudentEnrollCourseOnSemester(String studentIdValue) throws Exception {
+    public List<Course> getStudentEnrollCourseOnSemester(int studentIdValue) throws Exception {
 
         List<Course> courses = new ArrayList<>();
 
         Connection myConn = null;
-        Statement myStmt = null;
+        PreparedStatement myStmt = null;
         ResultSet myRs = null;
 
         try {
@@ -297,15 +298,16 @@ public class CourseDaoImpl {
             myConn = dataSource.getConnection();
 
             // create sql statement
-            String sql = "SELECT c.ID, c.title, c.semester, r.id " +
+            String sql = "SELECT c.*, r.id " +
                     "FROM course c, registration r WHERE r.courseID = c.ID" +
-                    " AND r.studentID = " +
-                    studentIdValue ;
+                    " AND r.studentID =?";
 
-            myStmt = myConn.createStatement();
+            myStmt = myConn.prepareStatement(sql);
+
+            myStmt.setInt(1, studentIdValue);
 
             // execute query
-            myRs = myStmt.executeQuery(sql);
+            myRs = myStmt.executeQuery();
 
             // process result set
             while (myRs.next()) {
@@ -314,12 +316,17 @@ public class CourseDaoImpl {
                 int id = myRs.getInt("id");
                 String title = myRs.getString("title");
                 String semester = myRs.getString("semester");
+                String days = myRs.getString("days");
+                String time = myRs.getString("time");
+                String instructor = myRs.getString("instructor");
+                String room = myRs.getString("room");
+                Date startDate = myRs.getDate("startDate");
+                Date endDate = myRs.getDate("endDate");
+                int adminID = myRs.getInt("adminID");
 
-                // create new student object
-                //Course tempCourse = new Course(id, title, semester);
-
-                // add it to the list of students
-                //courses.add(tempCourse);
+                // create new course object
+                Course theCourse = new Course(id, title, semester, days, time, instructor, room, startDate, endDate, adminID);
+                courses.add(theCourse);
             }
 
             return courses;

@@ -81,9 +81,9 @@
                                     <div class="tab-content">
                                         <div class="tab-pane" id="Login" role="tabpanel" aria-labelledby="tab-login">
 
-                                            <form method="post" id="form1">
+                                            <form action="" method="GET" name="studentForm" id="form1">
 
-                                                <p class="text-center">Enter student ID</p>
+                                                <p class="text-center" id="studentid">Enter student ID</p>
 
                                                 <!-- Student ID input -->
                                                 <div class="form-outline mb-4">
@@ -98,20 +98,20 @@
                                                 <div class=" main" id="radiobox">
                                                     <input type="radio" id="first" name="semester" value="Fall">
                                                     <div class="first" label for="first" p style="color:black;">Fall
-                                                        Term</p></div>
+                                                        Term</div>
                                                     <input type="radio" id="second" name="semester" value="Winter">
                                                     <div class="second" label for="second" p style="color:black;">Winter
-                                                        Term</p></div>
+                                                        Term</div>
                                                     <input type="radio" id="third" name="semester" value="Summer">
                                                     <div class="third" label for="third" p style="color:black;">Summer
-                                                        Term</p></div>
+                                                        Term</div>
                                                 </div>
                                                 </body>
                                                 <button type="button" class="btn btn-primary btn-block mb-4"
-                                                        onClick="validation('courses.php')">Add a course
+                                                        onclick="addCourse()">Add a course
                                                 </button>
                                                 <button type="button" class="btn btn-primary btn-block mb-4"
-                                                        onClick="validation('coursesDrop.php')">Drop a course
+                                                        onClick="dropCourse()">Drop a course
                                                 </button>
                                             </form>
 
@@ -235,7 +235,41 @@
 </section>
 
 </body>
-<script>
+<script type="text/javascript">
+    function addCourse(){
+        let form = document.getElementById("form1");
+        let a = form.firstElementChild;
+        if(a.id === "studentid"){
+            document.studentForm.action = "StudentControllerServlet";
+            document.studentForm.method = "GET";
+            let p = document.getElementById("studentid");
+            let input = document.createElement("input");
+            input.setAttribute("type","hidden");
+            input.setAttribute("name","command");
+            input.setAttribute("value","LOAD");
+            input.setAttribute("id","hiddenInput");
+            form.insertBefore(input, p);
+            console.log(form.firstElementChild);
+        }
+        document.studentForm.submit();
+    }
+    function dropCourse(){
+        let form = document.getElementById("form1");
+        let a = form.firstElementChild;
+        if(a.id === "studentid"){
+            document.studentForm.action = "StudentControllerServlet";
+            document.studentForm.method = "GET";
+            let p = document.getElementById("studentid");
+            let input = document.createElement("input");
+            input.setAttribute("type","hidden");
+            input.setAttribute("name","command");
+            input.setAttribute("value","DROP");
+            input.setAttribute("id","hiddenInput");
+            form.insertBefore(input, p);
+            console.log(form.firstElementChild);
+        }
+        document.studentForm.submit();
+    }
     function openTab(evt, name) {
         var i, tabcontent, tablinks;
         tabcontent = document.getElementsByClassName("tab-pane");

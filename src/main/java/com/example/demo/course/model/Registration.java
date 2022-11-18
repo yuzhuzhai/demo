@@ -2,10 +2,10 @@ package com.example.demo.course.model;
 
 public class Registration {
     private int id;
-    private String studentID;
+    private int studentID;
     private int courseID;
 
-    public Registration(int id, String studentID, int courseID) {
+    public Registration(int id, int studentID, int courseID) {
         this.id = id;
         this.studentID = studentID;
         this.courseID = courseID;
@@ -19,11 +19,11 @@ public class Registration {
         this.id = id;
     }
 
-    public String getStudentID() {
+    public int getStudentID() {
         return studentID;
     }
 
-    public void setStudentID(String studentID) {
+    public void setStudentID(int studentID) {
         this.studentID = studentID;
     }
 
