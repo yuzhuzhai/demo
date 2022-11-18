@@ -21,14 +21,14 @@
 <%
   // get the students from the request object (sent by servlet)
   List<Course> theCourses =
-          (List<Course>) request.getAttribute("COURSE_LIST");
+          (List<Course>) request.getAttribute("COURSE_LIST_BY_STUDENT");
 %>
 
 <body>
 
 <div id="wrapper">
   <div id="header">
-    <h2>Concordia University</h2>
+    <h2>Course list by student</h2>
   </div>
 </div>
 

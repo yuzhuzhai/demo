@@ -21,7 +21,8 @@ import java.util.List;
  */
 @WebServlet("/StudentControllerServlet")
 public class StudentControllerServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
+
 
 	private StudentDaoImpl studentDaoImpl;
 	private CourseDaoImpl courseDaoImpl;
@@ -29,9 +30,10 @@ public class StudentControllerServlet extends HttpServlet {
 	@Resource(name="jdbc/course_management")
 	private DataSource dataSource;
 
-	@Override
-	public void init() throws ServletException {
-		super.init();
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
 
 		// create student dao implementation ... and pass in the conn pool / datasource
 		try {
@@ -43,93 +45,109 @@ public class StudentControllerServlet extends HttpServlet {
 		}
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		try {
-			// read the "command" parameter
-			String theCommand = request.getParameter("command");
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response)
+            throws ServletException, IOException {
 
-			// if the command is missing, then default to listing students
-			if (theCommand == null) {
-				theCommand = "LIST";
-			}
+        try {
+            // read the "command" parameter
+            String theCommand = request.getParameter("command");
 
-			// route to the appropriate method
-			switch (theCommand) {
+            // if the command is missing, then default to listing students
+            if (theCommand == null) {
+                theCommand = "LIST";
+            }
 
-			case "LIST":
-				listStudents(request, response);
-				break;
+            // route to the appropriate method
+            switch (theCommand) {
 
-			case "ADD":
-				addStudent(request, response);
-				break;
+                case "LIST":
+                    listStudents(request, response);
+                    break;
 
-			case "LOAD":
-				loadStudent(request, response);
-				break;
+                case "LIST_COURSE_BY_STUDENT":
+                    listStudentsByCourse(request, response);
+                    break;
 
-			case "UPDATE":
-				updateStudent(request, response);
-				break;
+                case "ADD":
+                    addStudent(request, response);
+                    break;
+
+                case "LOAD":
+                    loadStudent(request, response);
+                    break;
+
 
 			case "DROP":
 				studentDropCourse(request, response);
 				break;
 
-			default:
-				listStudents(request, response);
-			}
+                case "UPDATE":
+                    updateStudent(request, response);
+                    break;
 
-		}
-		catch (Exception exc) {
-			throw new ServletException(exc);
-		}
 
-	}
+                case "DELETE":
+                    deleteStudent(request, response);
+                    break;
 
-	private void deleteStudent(HttpServletRequest request, HttpServletResponse response)
-		throws Exception {
+                default:
+                    listStudents(request, response);
+            }
 
-		// read student id from form data
-		String theStudentId = request.getParameter("studentId");
+        } catch (Exception exc) {
+            throw new ServletException(exc);
+        }
 
-		// delete student from database
-		studentDaoImpl.deleteStudent(theStudentId);
+    }
 
-		// send them back to "list students" page
-		listStudents(request, response);
-	}
+    private void deleteStudent(HttpServletRequest request,
+                               HttpServletResponse response)
+            throws Exception {
 
-	private void updateStudent(HttpServletRequest request, HttpServletResponse response)
-		throws Exception {
+        // read student id from form data
+        String theStudentId = request.getParameter("studentId");
 
-		// read student info from form data
-		int id = Integer.parseInt(request.getParameter("studentId"));
-		String firstName = request.getParameter("firstName");
-		String lastName = request.getParameter("lastName");
-		String email = request.getParameter("email");
+        // delete student from database
+        studentDaoImpl.deleteStudent(theStudentId);
 
-		// create a new student object
-		Student theStudent = new Student(id, firstName, lastName, email);
+        // send them back to "list students" page
+        listStudents(request, response);
+    }
 
-		// perform update on database
-		studentDaoImpl.updateStudent(theStudent);
+    private void updateStudent(HttpServletRequest request,
+                               HttpServletResponse response)
+            throws Exception {
 
-		// send them back to the "list students" page
-		listStudents(request, response);
+        // read student info from form data
+        int id = Integer.parseInt(request.getParameter("studentId"));
+        String firstName = request.getParameter("firstName");
+        String lastName = request.getParameter("lastName");
+        String email = request.getParameter("email");
 
-	}
+        // create a new student object
+        Student theStudent = new Student(id, firstName, lastName, email);
 
-	private void loadStudent(HttpServletRequest request, HttpServletResponse response)
-		throws Exception {
+        // perform update on database
+        studentDaoImpl.updateStudent(theStudent);
+
+        // send them back to the "list students" page
+        listStudents(request, response);
+
+    }
+
+
+    private void loadStudent(HttpServletRequest request,
+                             HttpServletResponse response)
+            throws Exception {
+
 
 		// read student id from form data
 		String theStudentId = request.getParameter("stdID");
 		// read semester id from form data
 		String theSemester = request.getParameter("semester");
 
-		// get student from database (db util)
 		Student theStudent = studentDaoImpl.getStudent(theStudentId);
 
 //		IMPORTANT: check this code later
@@ -174,50 +192,56 @@ public class StudentControllerServlet extends HttpServlet {
 		dispatcher.forward(request, response);
 	}
 
-	private void addStudent(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-		// read student info from form data
-		String firstName = request.getParameter("firstName");
-		String lastName = request.getParameter("lastName");
-		String email = request.getParameter("email");
+    private void addStudent(HttpServletRequest request,
+                            HttpServletResponse response) throws Exception {
 
-		// create a new student object
-		Student theStudent = new Student(firstName, lastName, email);
+        // read student info from form data
+        String firstName = request.getParameter("firstName");
+        String lastName = request.getParameter("lastName");
+        String email = request.getParameter("email");
 
-		// add the student to the database
-		studentDaoImpl.addStudent(theStudent);
+        // create a new student object
+        Student theStudent = new Student(firstName, lastName, email);
 
-		// send back to main page (the student list)
-		listStudents(request, response);
-	}
+        // add the student to the database
+        studentDaoImpl.addStudent(theStudent);
 
-	private void listStudents(HttpServletRequest request, HttpServletResponse response)
-		throws Exception {
+        // send back to main page (the student list)
+        listStudents(request, response);
+    }
 
-		// get students from dao implementation
-		List<Student> students = studentDaoImpl.getStudents();
+    private void listStudents(HttpServletRequest request,
+                              HttpServletResponse response)
+            throws Exception {
 
-		// add students to the request
-		request.setAttribute("STUDENT_LIST", students);
+        // get students from dao implementation
+        List<Student> students = studentDaoImpl.getStudents();
 
-		// send to JSP page (view)
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/list-students.jsp");
-		dispatcher.forward(request, response);
-	}
+        // add students to the request
+        request.setAttribute("STUDENT_LIST", students);
 
-	private void listStudentsByCourse(HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
+        // send to JSP page (view)
+        RequestDispatcher dispatcher =
+                request.getRequestDispatcher("/admin-list-students.jsp");
+        dispatcher.forward(request, response);
+    }
 
-		String courseName = request.getParameter("courseName");
+    private void listStudentsByCourse(HttpServletRequest request,
+                                      HttpServletResponse response)
+            throws Exception {
 
-		//List<Student> students = studentDaoImpl.getStudentsByCourse(courseName);
+        int courseID = Integer.parseInt(request.getParameter("courseID"));
 
-		//request.setAttribute("STUDENT_LIST_BY_COURSE", students);
+        List<Student> students = studentDaoImpl.getStudentsByCourse(courseID);
 
-		// send to JSP page (view)
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/admin-list-student.jsp");
-		dispatcher.forward(request, response);
-	}
+        request.setAttribute("STUDENT_LIST_BY_COURSE", students);
+
+        // send to JSP page (view)
+        RequestDispatcher dispatcher =
+                request.getRequestDispatcher("/admin-list-student.jsp");
+        dispatcher.forward(request, response);
+    }
 
 }
 
