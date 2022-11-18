@@ -46,7 +46,7 @@ public class CourseDaoImpl {
                 String title = myRs.getString("title");
                 String semester = myRs.getString("semester");
                 String days = myRs.getString("days");
-                Timestamp time = myRs.getTimestamp("time");
+                String time = myRs.getString("time");
                 String instructor = myRs.getString("instructor");
                 String room = myRs.getString("room");
                 Date startDate = myRs.getDate("startDate");
@@ -99,7 +99,7 @@ public class CourseDaoImpl {
                 String title = myRs.getString("title");
                 String semester = myRs.getString("semester");
                 String days = myRs.getString("days");
-                Timestamp time = myRs.getTimestamp("time");
+                String time = myRs.getString("time");
                 String instructor = myRs.getString("instructor");
                 String room = myRs.getString("room");
                 Date startDate = myRs.getDate("startDate");
@@ -186,7 +186,7 @@ public class CourseDaoImpl {
             myStmt.setString(2, theCourse.getTitle());
             myStmt.setString(3, theCourse.getSemester());
             myStmt.setString(4, theCourse.getDays());
-            myStmt.setTimestamp(5, theCourse.getTime());
+            myStmt.setString(5, theCourse.getTime());
             myStmt.setString(6, theCourse.getInstructor());
             myStmt.setString(7, theCourse.getRoom());
             myStmt.setDate(8,

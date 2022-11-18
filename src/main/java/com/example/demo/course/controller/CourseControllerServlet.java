@@ -110,7 +110,7 @@ public class CourseControllerServlet extends HttpServlet {
         String title = request.getParameter("Title");
         String semester = request.getParameter("Semester");
         String days = request.getParameter("Days");
-        Timestamp time = Timestamp.valueOf(request.getParameter("Time"));
+        String time = request.getParameter("Time");
         String instructor = request.getParameter("Instructor");
         String room = request.getParameter("Room");
         System.out.println(request.getParameter("StartDate"));
