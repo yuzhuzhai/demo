@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -100,7 +101,7 @@ public class CourseControllerServlet extends HttpServlet {
         String title = request.getParameter("Title");
         String semester = request.getParameter("Semester");
         String days = request.getParameter("Days");
-        String time = request.getParameter("Time");
+        Timestamp time = Timestamp.valueOf(request.getParameter("Time"));
         String instructor = request.getParameter("Instructor");
         String room = request.getParameter("Room");
         System.out.println(request.getParameter("StartDate"));
@@ -125,10 +126,10 @@ public class CourseControllerServlet extends HttpServlet {
 
         List<Course> courses = courseDaoImpl.getCourses();
 
-        request.setAttribute("COURSE_LIST", courses);
+        request.setAttribute("ALL_COURSE_LIST", courses);
 
         // send to JSP page (view)
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin-list-courses.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin-list-all-course.jsp");
         dispatcher.forward(request, response);
     }
 
@@ -139,10 +140,10 @@ public class CourseControllerServlet extends HttpServlet {
 
         List<Course> courses = courseDaoImpl.getCoursesByStudent(studentId);
 
-        request.setAttribute("COURSE_LIST", courses);
+        request.setAttribute("COURSE_LIST_BY_STUDENT", courses);
 
         // send to JSP page (view)
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin-list-courses.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin-list-student-courses.jsp");
         dispatcher.forward(request, response);
     }
 

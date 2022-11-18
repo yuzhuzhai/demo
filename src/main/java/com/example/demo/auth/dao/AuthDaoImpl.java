@@ -1,55 +1,101 @@
-//package com.example.demo.auth.dao;
-//
-//import com.example.demo.course.model.Course;
-//
-//import javax.sql.DataSource;
-//import java.sql.Connection;
-//import java.sql.PreparedStatement;
-//import java.util.logging.Logger;
-//
-//public class AuthDaoImpl {
-//    private DataSource dataSource;
-//    public Logger logger;
-//
-//    public AuthDaoImpl(DataSource theDataSource) {
-//        dataSource = theDataSource;
-//    }
-//
-//    public void checkAuth(User theUser) throws Exception {
-//
-//        Connection myConn = null;
-//        PreparedStatement myStmt = null;
-//
-//        try {
-//            // get db connection
-//            myConn = dataSource.getConnection();
-//
-//            // create sql for insert
-//            String sql = "INSERT INTO course (ID,title,semester,days,time,instructor,room,startDate,endDate,adminID) " +
-//                    "VALUES (?,?,?,?,?,?,?,?,?,?)";
-//            myStmt = myConn.prepareStatement(sql);
-//
-////            myStmt.setInt(1, theCourse.getID());
-////            myStmt.setString(2, theCourse.getTitle());
-////            myStmt.setString(3, theCourse.getSemester());
-////            myStmt.setString(4, theCourse.getDays());
-////            myStmt.setString(5, theCourse.getTime());
-////            myStmt.setString(6, theCourse.getInstructor());
-////            myStmt.setString(7, theCourse.getRoom());
-////            myStmt.setString(8, theCourse.getStartDate());
-////            myStmt.setString(9, theCourse.getEndDate());
-////            myStmt.setInt(10, theCourse.getAdminID());
-//
-//
-//
-//
-//
-//            // execute sql insert
-//            myStmt.execute();
-//        }
-//        finally {
-//            // clean up JDBC objects
-//            close(myConn, myStmt, null);
-//        }
-//    }
-//}
+package com.example.demo.auth.dao;
+
+import com.example.demo.auth.model.User;
+import org.mindrot.jbcrypt.BCrypt;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.logging.Logger;
+
+
+public class AuthDaoImpl {
+    private DataSource dataSource;
+    public Logger logger;
+
+    public AuthDaoImpl(DataSource theDataSource) {
+        dataSource = theDataSource;
+    }
+
+    public boolean checkAuth(User theUser) throws Exception {
+
+        Connection myConn = null;
+        Statement myStmt = null;
+        ResultSet myRs = null;
+
+        try {
+            // get db connection
+            myConn = dataSource.getConnection();
+
+            // create sql for insert
+            String sql = "select * from user where name = ? && password = ?";
+
+            myStmt = myConn.createStatement();
+
+            myRs = myStmt.executeQuery(sql);
+
+            while (myRs.next()) {
+                String hashPassword = BCrypt.hashpw(theUser.getPassword(), BCrypt.gensalt());
+                String sqlPassword = myRs.getString("password");
+                String sqlName = myRs.getString("name");
+                String name = theUser.getName();
+                if(hashPassword.equals(sqlPassword)&&sqlName.equals(name)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            return true;
+        }
+        finally {
+            // clean up JDBC objects
+            close(myConn, myStmt, myRs);
+        }
+    }
+    private void close(Connection myConn, Statement myStmt, ResultSet myRs) {
+
+        try {
+            if (myRs != null) {
+                myRs.close();
+            }
+
+            if (myStmt != null) {
+                myStmt.close();
+            }
+
+            if (myConn != null) {
+                myConn.close();   // doesn't really close it ... just puts back in connection pool
+            }
+        }
+        catch (Exception exc) {
+            exc.printStackTrace();
+        }
+    }
+
+    public void register(User theUser) throws Exception {
+
+        Connection myConn = null;
+        PreparedStatement myStmt = null;
+
+        try {
+            myConn = dataSource.getConnection();
+
+            // create sql for insert
+            String sql = "INSERT INTO user (id, name, password)" +
+                    "VALUES (?,?,?)";
+            myStmt = myConn.prepareStatement(sql);
+
+            myStmt.setInt(1, theUser.getID());
+            String hashPassword = BCrypt.hashpw(theUser.getPassword(), BCrypt.gensalt());
+            myStmt.setString(2, theUser.getName());
+            myStmt.setString(3, hashPassword);
+
+            myStmt.execute();
+        }
+        finally {
+            close(myConn, myStmt, null);
+        }
+    }
+}

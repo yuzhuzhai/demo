@@ -19,166 +19,178 @@ import java.util.List;
  */
 @WebServlet("/StudentControllerServlet")
 public class StudentControllerServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private StudentDaoImpl studentDaoImpl;
+    private StudentDaoImpl studentDaoImpl;
 
-	@Resource(name="jdbc/products")
-	private DataSource dataSource;
+    @Resource(name = "jdbc/products")
+    private DataSource dataSource;
 
-	@Override
-	public void init() throws ServletException {
-		super.init();
+    @Override
+    public void init() throws ServletException {
+        super.init();
 
-		// create student dao implementation ... and pass in the conn pool / datasource
-		try {
-			studentDaoImpl = new StudentDaoImpl(dataSource);
-		}
-		catch (Exception exc) {
-			throw new ServletException(exc);
-		}
-	}
+        // create student dao implementation ... and pass in the conn pool / datasource
+        try {
+            studentDaoImpl = new StudentDaoImpl(dataSource);
+        } catch (Exception exc) {
+            throw new ServletException(exc);
+        }
+    }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response)
+            throws ServletException, IOException {
 
-		try {
-			// read the "command" parameter
-			String theCommand = request.getParameter("command");
+        try {
+            // read the "command" parameter
+            String theCommand = request.getParameter("command");
 
-			// if the command is missing, then default to listing students
-			if (theCommand == null) {
-				theCommand = "LIST";
-			}
+            // if the command is missing, then default to listing students
+            if (theCommand == null) {
+                theCommand = "LIST";
+            }
 
-			// route to the appropriate method
-			switch (theCommand) {
+            // route to the appropriate method
+            switch (theCommand) {
 
-			case "LIST":
-				listStudents(request, response);
-				break;
+                case "LIST":
+                    listStudents(request, response);
+                    break;
 
-			case "ADD":
-				addStudent(request, response);
-				break;
+                case "LIST_COURSE_BY_STUDENT":
+                    listStudentsByCourse(request, response);
+                    break;
 
-			case "LOAD":
-				loadStudent(request, response);
-				break;
+                case "ADD":
+                    addStudent(request, response);
+                    break;
 
-			case "UPDATE":
-				updateStudent(request, response);
-				break;
+                case "LOAD":
+                    loadStudent(request, response);
+                    break;
 
-			case "DELETE":
-				deleteStudent(request, response);
-				break;
+                case "UPDATE":
+                    updateStudent(request, response);
+                    break;
 
-			default:
-				listStudents(request, response);
-			}
+                case "DELETE":
+                    deleteStudent(request, response);
+                    break;
 
-		}
-		catch (Exception exc) {
-			throw new ServletException(exc);
-		}
+                default:
+                    listStudents(request, response);
+            }
 
-	}
+        } catch (Exception exc) {
+            throw new ServletException(exc);
+        }
 
-	private void deleteStudent(HttpServletRequest request, HttpServletResponse response)
-		throws Exception {
+    }
 
-		// read student id from form data
-		String theStudentId = request.getParameter("studentId");
+    private void deleteStudent(HttpServletRequest request,
+                               HttpServletResponse response)
+            throws Exception {
 
-		// delete student from database
-		studentDaoImpl.deleteStudent(theStudentId);
+        // read student id from form data
+        String theStudentId = request.getParameter("studentId");
 
-		// send them back to "list students" page
-		listStudents(request, response);
-	}
+        // delete student from database
+        studentDaoImpl.deleteStudent(theStudentId);
 
-	private void updateStudent(HttpServletRequest request, HttpServletResponse response)
-		throws Exception {
+        // send them back to "list students" page
+        listStudents(request, response);
+    }
 
-		// read student info from form data
-		int id = Integer.parseInt(request.getParameter("studentId"));
-		String firstName = request.getParameter("firstName");
-		String lastName = request.getParameter("lastName");
-		String email = request.getParameter("email");
+    private void updateStudent(HttpServletRequest request,
+                               HttpServletResponse response)
+            throws Exception {
 
-		// create a new student object
-		Student theStudent = new Student(id, firstName, lastName, email);
+        // read student info from form data
+        int id = Integer.parseInt(request.getParameter("studentId"));
+        String firstName = request.getParameter("firstName");
+        String lastName = request.getParameter("lastName");
+        String email = request.getParameter("email");
 
-		// perform update on database
-		studentDaoImpl.updateStudent(theStudent);
+        // create a new student object
+        Student theStudent = new Student(id, firstName, lastName, email);
 
-		// send them back to the "list students" page
-		listStudents(request, response);
+        // perform update on database
+        studentDaoImpl.updateStudent(theStudent);
 
-	}
+        // send them back to the "list students" page
+        listStudents(request, response);
 
-	private void loadStudent(HttpServletRequest request, HttpServletResponse response)
-		throws Exception {
+    }
 
-		// read student id from form data
-		String theStudentId = request.getParameter("studentId");
+    private void loadStudent(HttpServletRequest request,
+                             HttpServletResponse response)
+            throws Exception {
 
-		// get student from database (db util)
-		Student theStudent = studentDaoImpl.getStudent(theStudentId);
+        // read student id from form data
+        String theStudentId = request.getParameter("studentId");
 
-		// place student in the request attribute
-		request.setAttribute("THE_STUDENT", theStudent);
+        // get student from database (db util)
+        Student theStudent = studentDaoImpl.getStudent(theStudentId);
 
-		// send to jsp page: update-student-form.jsp
-		RequestDispatcher dispatcher =
-				request.getRequestDispatcher("/update-student-form.jsp");
-		dispatcher.forward(request, response);
-	}
+        // place student in the request attribute
+        request.setAttribute("THE_STUDENT", theStudent);
 
-	private void addStudent(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        // send to jsp page: update-student-form.jsp
+        RequestDispatcher dispatcher =
+                request.getRequestDispatcher("/update-student-form.jsp");
+        dispatcher.forward(request, response);
+    }
 
-		// read student info from form data
-		String firstName = request.getParameter("firstName");
-		String lastName = request.getParameter("lastName");
-		String email = request.getParameter("email");
+    private void addStudent(HttpServletRequest request,
+                            HttpServletResponse response) throws Exception {
 
-		// create a new student object
-		Student theStudent = new Student(firstName, lastName, email);
+        // read student info from form data
+        String firstName = request.getParameter("firstName");
+        String lastName = request.getParameter("lastName");
+        String email = request.getParameter("email");
 
-		// add the student to the database
-		studentDaoImpl.addStudent(theStudent);
+        // create a new student object
+        Student theStudent = new Student(firstName, lastName, email);
 
-		// send back to main page (the student list)
-		listStudents(request, response);
-	}
+        // add the student to the database
+        studentDaoImpl.addStudent(theStudent);
 
-	private void listStudents(HttpServletRequest request, HttpServletResponse response)
-		throws Exception {
+        // send back to main page (the student list)
+        listStudents(request, response);
+    }
 
-		// get students from dao implementation
-		List<Student> students = studentDaoImpl.getStudents();
+    private void listStudents(HttpServletRequest request,
+                              HttpServletResponse response)
+            throws Exception {
 
-		// add students to the request
-		request.setAttribute("STUDENT_LIST", students);
+        // get students from dao implementation
+        List<Student> students = studentDaoImpl.getStudents();
 
-		// send to JSP page (view)
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/list-students.jsp");
-		dispatcher.forward(request, response);
-	}
+        // add students to the request
+        request.setAttribute("STUDENT_LIST", students);
 
-	private void listStudentsByCourse(HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
+        // send to JSP page (view)
+        RequestDispatcher dispatcher =
+                request.getRequestDispatcher("/admin-list-students.jsp");
+        dispatcher.forward(request, response);
+    }
 
-		String courseName = request.getParameter("courseName");
+    private void listStudentsByCourse(HttpServletRequest request,
+                                      HttpServletResponse response)
+            throws Exception {
 
-		//List<Student> students = studentDaoImpl.getStudentsByCourse(courseName);
+        int courseID = Integer.parseInt(request.getParameter("courseID"));
 
-		//request.setAttribute("STUDENT_LIST_BY_COURSE", students);
+        List<Student> students = studentDaoImpl.getStudentsByCourse(courseID);
 
-		// send to JSP page (view)
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/admin-list-student.jsp");
-		dispatcher.forward(request, response);
-	}
+        request.setAttribute("STUDENT_LIST_BY_COURSE", students);
+
+        // send to JSP page (view)
+        RequestDispatcher dispatcher =
+                request.getRequestDispatcher("/admin-list-student.jsp");
+        dispatcher.forward(request, response);
+    }
 
 }
 

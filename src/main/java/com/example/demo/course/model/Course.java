@@ -1,6 +1,7 @@
 package com.example.demo.course.model;
 
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class Course {
@@ -8,7 +9,7 @@ public class Course {
     private String title;
     private String semester;
     private String days;
-    private String time;
+    private Timestamp time;
     private String instructor;
     private String room;
     private Date startDate;
@@ -46,11 +47,11 @@ public class Course {
         this.days = days;
     }
 
-    public String getTime() {
+    public Timestamp getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(Timestamp time) {
         this.time = time;
     }
 
@@ -94,7 +95,7 @@ public class Course {
         this.adminID = adminID;
     }
 
-    public Course(int ID, String title, String semester, String days, String time,
+    public Course(int ID, String title, String semester, String days, Timestamp time,
                   String instructor, String room, Date startDate,
                   Date endDate, int adminID) {
         this.ID=ID;        this.title = title;
