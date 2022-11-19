@@ -19,10 +19,48 @@ public class AuthDaoImpl {
         dataSource = theDataSource;
     }
 
-    public boolean checkAuth(User theUser) throws Exception {
+    public boolean checkStdAuth(User theUser) throws Exception {
 
         Connection myConn = null;
-        Statement myStmt = null;
+        PreparedStatement myStmt = null;
+        ResultSet myRs = null;
+
+        try {
+            // get db connection
+            myConn = dataSource.getConnection();
+            System.out.println("go to ath dao impl");
+
+            // create sql for insert
+            String sql = "select * from user ";
+            myStmt = myConn.prepareStatement(sql);
+
+            myRs = myStmt.executeQuery();
+
+            while (myRs.next()) {
+                String sqlPassword = myRs.getString("password");
+                String sqlName = myRs.getString("name");
+                int sqlStdId = myRs.getInt("studentId");
+                String name = theUser.getName();
+                int stdId = theUser.getStudentID();
+
+                if (BCrypt.checkpw(theUser.getPassword(), sqlPassword) &&
+                        sqlName.equals(name) && sqlStdId == stdId) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            return false;
+        } finally {
+            // clean up JDBC objects
+            close(myConn, myStmt, myRs);
+        }
+    }
+
+    public boolean checkAdminAuth(User theUser) throws Exception {
+
+        Connection myConn = null;
+        PreparedStatement myStmt = null;
         ResultSet myRs = null;
 
         try {
@@ -30,30 +68,32 @@ public class AuthDaoImpl {
             myConn = dataSource.getConnection();
 
             // create sql for insert
-            String sql = "select * from user where name = ? && password = ?";
+            String sql = "select * from user ";
+            myStmt = myConn.prepareStatement(sql);
 
-            myStmt = myConn.createStatement();
-
-            myRs = myStmt.executeQuery(sql);
+            myRs = myStmt.executeQuery();
 
             while (myRs.next()) {
-                String hashPassword = BCrypt.hashpw(theUser.getPassword(), BCrypt.gensalt());
                 String sqlPassword = myRs.getString("password");
                 String sqlName = myRs.getString("name");
+                int sqlAdminId = myRs.getInt("adminId");
                 String name = theUser.getName();
-                if(hashPassword.equals(sqlPassword)&&sqlName.equals(name)) {
+                int adminId = theUser.getAdminID();
+
+                if (BCrypt.checkpw(theUser.getPassword(), sqlPassword) &&
+                        sqlName.equals(name) && sqlAdminId == adminId) {
                     return true;
                 } else {
                     return false;
                 }
             }
-            return true;
-        }
-        finally {
+            return false;
+        } finally {
             // clean up JDBC objects
             close(myConn, myStmt, myRs);
         }
     }
+
     private void close(Connection myConn, Statement myStmt, ResultSet myRs) {
 
         try {
@@ -68,8 +108,7 @@ public class AuthDaoImpl {
             if (myConn != null) {
                 myConn.close();   // doesn't really close it ... just puts back in connection pool
             }
-        }
-        catch (Exception exc) {
+        } catch (Exception exc) {
             exc.printStackTrace();
         }
     }
@@ -83,18 +122,22 @@ public class AuthDaoImpl {
             myConn = dataSource.getConnection();
 
             // create sql for insert
-            String sql = "INSERT INTO user (id, name, password)" +
-                    "VALUES (?,?,?)";
+            String sql =
+                    "INSERT INTO user (name, password,studentId, adminId)" +
+                            "VALUES (?,?, ?, ?)";
             myStmt = myConn.prepareStatement(sql);
 
-            myStmt.setInt(1, theUser.getID());
-            String hashPassword = BCrypt.hashpw(theUser.getPassword(), BCrypt.gensalt());
-            myStmt.setString(2, theUser.getName());
-            myStmt.setString(3, hashPassword);
+
+            String hashPassword =
+                    BCrypt.hashpw(theUser.getPassword(), BCrypt.gensalt());
+            System.out.println(hashPassword);
+            myStmt.setString(1, theUser.getName());
+            myStmt.setString(2, hashPassword);
+            myStmt.setInt(3, theUser.getStudentID());
+            myStmt.setInt(4, theUser.getAdminID());
 
             myStmt.execute();
-        }
-        finally {
+        } finally {
             close(myConn, myStmt, null);
         }
     }
