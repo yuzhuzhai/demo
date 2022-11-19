@@ -122,7 +122,7 @@
                                         <div class="tab-pane" id="Register" role="tabpanel"
                                              aria-labelledby="tab-register">
                                             <form action="CourseControllerServlet" method="POST">
-                                                <input type="hidden" name="command" value="ADD" />
+                                                <input type="hidden" name="command" value="ADD"/>
 
                                                 <p class="text-center">Add new Course Information</p>
 

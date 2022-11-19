@@ -65,9 +65,9 @@
                                                     role="tab"
                                                     aria-controls="pills-login"
                                                     aria-selected="true"
-                                                    onclick="openTab(event, 'Login')"
-                                            >Report 1</
-                                            >
+                                                    onclick="openTab(event, 'Login')">
+                                                Report 1
+                                            </button>
                                         </li>
                                         <li class="nav-item" role="presentation">
                                             <button
@@ -78,9 +78,9 @@
                                                     role="tab"
                                                     aria-controls="pills-register"
                                                     aria-selected="false"
-                                                    onclick="openTab(event, 'Register')"
-                                            >Report 2</
-                                            >
+                                                    onclick="openTab(event, 'Register')">
+                                                Report 2
+                                            </button>
                                         </li>
                                     </ul>
                                     <!-- Pills navs -->

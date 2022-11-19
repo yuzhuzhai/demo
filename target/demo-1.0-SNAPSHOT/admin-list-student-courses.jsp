@@ -40,16 +40,16 @@
 
       <tr>
         <th>title</th>
-        <th>semester</th>
-        <th>days</th>
+        <th>course id</th>
+        <th>instructor</th>
       </tr>
 
       <% for (Course currentCourse : theCourses) { %>
 
       <tr>
         <td> <%= currentCourse.getTitle() %> </td>
-        <td> <%= currentCourse.getSemester() %> </td>
-        <td> <%= currentCourse.getDays() %> </td>
+        <td> <%= currentCourse.getID() %> </td>
+        <td> <%= currentCourse.getInstructor() %> </td>
       </tr>
 
       <% } %>

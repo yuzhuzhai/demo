@@ -175,7 +175,7 @@ public class StudentDaoImpl {
 			myConn = dataSource.getConnection();
 
 			// create sql statement
-			String sql = "SELECT student.firstName, registration.studentID FROM registration join student where student.ID = registration.studentID and registration.courseID = ?";
+			String sql = "SELECT student.firstName, student.ID, student.email, student.lastName FROM registration join student where student.ID = registration.studentID and registration.courseID = ?";
 
 			myStmt = myConn.prepareStatement(sql);
 			myStmt.setInt(1, courseID);
@@ -187,9 +187,9 @@ public class StudentDaoImpl {
 			while (myRs.next()) {
 
 				// retrieve data from result set row
-				int id = myRs.getInt("id");
-				String firstName = myRs.getString("first_name");
-				String lastName = myRs.getString("last_name");
+				int id = myRs.getInt("ID");
+				String firstName = myRs.getString("firstName");
+				String lastName = myRs.getString("lastName");
 				String email = myRs.getString("email");
 
 				// create new student object

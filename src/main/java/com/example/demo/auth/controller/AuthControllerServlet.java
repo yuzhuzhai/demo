@@ -130,7 +130,7 @@ public class AuthControllerServlet extends HttpServlet {
             users.add(user);
             request.setAttribute("USER", users);
             RequestDispatcher dispatcher =
-                    request.getRequestDispatcher("/home.jsp");
+                    request.getRequestDispatcher("/admin.jsp");
             dispatcher.forward(request, response);
         } else {
             RequestDispatcher dispatcher =

@@ -30,9 +30,9 @@
                 <td><input type="password" name="password" required/></td>
             </tr>
             <tr>
-                <td colspan="2" align="center"><input type="submit" value="Login" />
+                <td colspan="2" align="center"><input type="submit" value="Login"/>
                     &nbsp;&nbsp;
-                    <input type="reset" value="Reset" />
+                    <input type="reset" value="Reset"/>
                 </td>
             </tr>
             </tbody>
