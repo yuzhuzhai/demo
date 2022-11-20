@@ -156,6 +156,8 @@ public class CourseControllerServlet extends HttpServlet {
 
     private void addRegistrationCourse(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
+        // read semester id from form data
+        String theSemester = request.getParameter("semester");
         // read student info from form data
         int studentID = Integer.parseInt(request.getParameter("stdID"));
         String[] courseIDArr = request.getParameterValues("courseID");
@@ -163,7 +165,15 @@ public class CourseControllerServlet extends HttpServlet {
             int courseID = Integer.parseInt(courseIDStr.trim());
             courseDaoImpl.addRegistrationCourse(studentID,courseID);
         }
+
         List<Course> enrolledCoursesForTheStudent = courseDaoImpl.getStudentEnrollCourseOnSemester(studentID);
+        for (int i = 0, len = enrolledCoursesForTheStudent.size(); i < len; i++) {
+            if(!enrolledCoursesForTheStudent.get(i).getSemester().equals(theSemester)){
+                enrolledCoursesForTheStudent.remove(i);
+                len--;
+                i--;
+            }
+        }
         request.setAttribute("ENROLLED_COURSE_LIST", enrolledCoursesForTheStudent);
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/register.jsp");

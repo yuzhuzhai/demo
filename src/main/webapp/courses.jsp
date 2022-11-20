@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.demo.course.model.Course" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -46,16 +48,30 @@
                                     <%
                                         String theSemester= (String) request.getAttribute("THE_SEMESTER");
                                         List<Course> theCourses = (List<Course>) request.getAttribute("COURSE_LIST");
+                                        List<Course> theEnrolledCourses = (List<Course>) request.getAttribute("ENROLLED_COURSE_LIST");
+                                        // check if the student already enrolled the course, if so, don't add it in theSemesterCourse list
                                         for (int i = 0, len = theCourses.size(); i < len; i++) {
-                                            if(!theCourses.get(i).getSemester().equals(theSemester)){
-                                                theCourses.remove(i);
-                                                len--;
-                                                i--;
+                                            for (int j = 0, len2 = theEnrolledCourses.size(); j < len2; j++) {
+                                                if(theCourses.get(i).getID() == (theEnrolledCourses.get(j).getID())){
+                                                    theCourses.remove(i);
+                                                    len--;
+                                                    i--;
+                                                    break;
+                                                }
                                             }
                                         }
                                     %>
-                                    <h3 class="text-center mb-5" style="color: white">You can select at most <?php echo (5 - $rowCount[0]); ?> courses from the following list:</h3>
+                                    <h3 class="text-center mb-5" style="color: white">You can select at most <%=(5 - theEnrolledCourses.size())%> courses from the following list:</h3>
                                     <table id="courseTable" class="table"><thead>
+                                    <%-- If student already selected 5 courses before, he/she does not allowed to select course anymore --%>
+                                    <c:if test="${fn:length(ENROLLED_COURSE_LIST)>=5}">
+                                        <div class="card-body align-items-center d-flex flex-column">
+                                            <h5 class="card-title" style="color: grey">Adding fail</h5>
+                                            <p class="card-text" style="color: grey">You have already 5 courses for this semester.</p>
+                                            <a href="home.jsp" class="btn btn-primary">Go Back</a>
+                                        </div>
+                                    </c:if>
+                                    <c:if test="${fn:length(ENROLLED_COURSE_LIST)<5}">
                                     <tr>
                                         <th></th>
                                         <th>ID</th>
@@ -87,14 +103,7 @@
                                             <td> <%= currentCourse.getAdminID() %> </td>
                                         </tr>
                                         <% } %>
-<%--                                        <!-- If student already selected 5 courses before, he/she does not allowed to select course anymore -->--%>
-<%--                                        <?php if (( $rowCount[0] == 5 )): ?>--%>
-<%--                                        <div class="card-body align-items-center d-flex flex-column">--%>
-<%--                                            <h5 class="card-title" style="color: grey">Adding fail</h5>--%>
-<%--                                            <p class="card-text" style="color: grey">You have already 5 courses for this semester.</p>--%>
-<%--                                            <a href="/SOEN387_Assignment_1/home.html" class="btn btn-primary">Go Back</a>--%>
-<%--                                        </div>--%>
-<%--                                        <?php endif; ?>--%>
+                                        </c:if>
                                     </table>
                                     <br /><br /><br />
                                     <div>
@@ -102,6 +111,7 @@
                                         <form class="align-items-center d-flex flex-column" id="registerForm" onsubmit="isDisabled()" method="post" action="CourseControllerServlet">
                                             <input type="hidden" name="command" value="REGISTER" />
                                             <input id="studentID" name="stdID" type="text" value="${THE_STUDENT.id}" readonly />
+                                            <input type="hidden" id="semester" name="semester" type="text" value="${THE_SEMESTER}" readonly/>
                                             <input id="registerButton" type="submit" value="Register"/>
                                         </form>
                                     </div>
