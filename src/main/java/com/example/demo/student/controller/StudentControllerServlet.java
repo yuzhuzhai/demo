@@ -221,7 +221,6 @@ public class StudentControllerServlet extends HttpServlet {
 
 		request.setAttribute("COURSE_LIST", enrolledCoursesForTheStudent);
 
-		// send to jsp page: update-student-form.jsp
 		RequestDispatcher dispatcher =
 				request.getRequestDispatcher("/courseDrop.jsp");
 		dispatcher.forward(request, response);

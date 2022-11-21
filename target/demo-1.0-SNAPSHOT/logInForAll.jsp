@@ -81,39 +81,43 @@
                                     <div class="tab-content">
                                         <div class="tab-pane" id="Login" role="tabpanel" aria-labelledby="tab-login">
 
-                                            <form action="AuthControllerServlet" method="GET" name="studentForm" id="form1">
-                                                <input type="hidden" name="command" value="STUDENT" />
+                                            <form action="AuthControllerServlet" method="GET" name="studentForm"
+                                                  id="form1">
+                                                <input type="hidden" name="command" value="STUDENT"/>
                                                 <p class="text-center">Login as a student</p>
 
                                                 <!-- Student ID input -->
                                                 <div class="form-outline mb-4">
-                                                    <input type="number"  name="StdID"
+                                                    <input type="number" name="StdID"
                                                            class="form-control" required/>
-                                                    <label class="form-label" >Student ID</label>
+                                                    <label class="form-label">Student ID</label>
                                                 </div>
 
                                                 <div class="form-outline mb-4">
-                                                    <input type="text"  name="Name"
+                                                    <input type="text" name="Name"
                                                            class="form-control" required/>
-                                                    <label class="form-label" >Student Name</label>
+                                                    <label class="form-label">Student Name</label>
                                                 </div>
 
                                                 <div class="form-outline mb-4">
                                                     <input type="text" name="Password"
                                                            class="form-control" required/>
-                                                    <label class="form-label" >Password</label>
+                                                    <label class="form-label">Password</label>
                                                 </div>
 
                                                 <button type="submit" class="btn btn-primary btn-block mb-3">Add
                                                     course
                                                 </button>
+                                                <div class="text-center">
+                                                    <p>Don't have account? <a href="./signUp.jsp">Sign Up</a></p>
+                                                </div>
                                             </form>
                                         </div>
 
                                         <div class="tab-pane" id="Register" role="tabpanel"
                                              aria-labelledby="tab-register">
                                             <form action="AuthControllerServlet" method="GET">
-                                                <input type="hidden" name="command" value="ADMIN" />
+                                                <input type="hidden" name="command" value="ADMIN"/>
 
                                                 <p class="text-center">Log In as a admin</p>
 
@@ -121,7 +125,7 @@
                                                 <div class="form-outline mb-4">
                                                     <div class="form-outline form-white">
                                                         <input name="adminID" type="number" class="form-control"/>
-                                                        <label class="form-label" >admin ID</label>
+                                                        <label class="form-label">admin ID</label>
                                                     </div>
                                                 </div>
 
@@ -129,7 +133,7 @@
                                                 <div class="form-outline mb-4">
                                                     <div class="form-outline form-white">
                                                         <input name="Name" type="text" class="form-control"/>
-                                                        <label class="form-label" >Name</label>
+                                                        <label class="form-label">Name</label>
                                                     </div>
                                                 </div>
 
@@ -138,7 +142,7 @@
                                                     <div class="form-outline form-white">
                                                         <input name="Password" type="text" class="form-control"/>
                                                         <label class="form-label"
-                                                               >Password</label>
+                                                        >Password</label>
                                                     </div>
                                                 </div>
 
@@ -146,10 +150,10 @@
                                                 <button type="submit" class="btn btn-primary btn-block mb-3">
                                                     LogIn
                                                 </button>
-
+                                                <div class="text-center">
+                                                    <p>Do't have account? <a href="./signUp.jsp">Sign Up</a></p>
+                                                </div>
                                             </form>
-
-
                                         </div>
                                     </div>
                                     <!-- Pills content -->
