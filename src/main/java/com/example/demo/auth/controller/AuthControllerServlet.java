@@ -122,12 +122,14 @@ public class AuthControllerServlet extends HttpServlet {
                             HttpServletResponse response)
             throws Exception {
         List<User> users = new ArrayList<>();
-        int ID = Integer.parseInt(request.getParameter("adminID"));
+        int adminID = Integer.parseInt(request.getParameter("adminID"));
         String name = request.getParameter("Name");
         String password = request.getParameter("Password");
-        User user = new User(ID, name, password);
-        if (authDaoImpl.checkAdminAuth(user)) {
-            users.add(user);
+        User adminUser = new User(name, password, adminID);
+        System.out.println(adminUser);
+        System.out.println(authDaoImpl.checkAdminAuth(adminUser));
+        if (authDaoImpl.checkAdminAuth(adminUser)) {
+            users.add(adminUser);
             request.setAttribute("USER", users);
             RequestDispatcher dispatcher =
                     request.getRequestDispatcher("/admin.jsp");

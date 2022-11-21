@@ -46,8 +46,6 @@ public class AuthDaoImpl {
                 if (BCrypt.checkpw(theUser.getPassword(), sqlPassword) &&
                         sqlName.equals(name) && sqlStdId == stdId) {
                     return true;
-                } else {
-                    return false;
                 }
             }
             return false;
@@ -57,7 +55,7 @@ public class AuthDaoImpl {
         }
     }
 
-    public boolean checkAdminAuth(User theUser) throws Exception {
+    public boolean checkAdminAuth(User adminUser) throws Exception {
 
         Connection myConn = null;
         PreparedStatement myStmt = null;
@@ -72,19 +70,18 @@ public class AuthDaoImpl {
             myStmt = myConn.prepareStatement(sql);
 
             myRs = myStmt.executeQuery();
+            System.out.println(myRs);
 
             while (myRs.next()) {
                 String sqlPassword = myRs.getString("password");
                 String sqlName = myRs.getString("name");
                 int sqlAdminId = myRs.getInt("adminId");
-                String name = theUser.getName();
-                int adminId = theUser.getAdminID();
+                String name = adminUser.getName();
+                int adminId = adminUser.getAdminID();
 
-                if (BCrypt.checkpw(theUser.getPassword(), sqlPassword) &&
+                if (BCrypt.checkpw(adminUser.getPassword(), sqlPassword) &&
                         sqlName.equals(name) && sqlAdminId == adminId) {
                     return true;
-                } else {
-                    return false;
                 }
             }
             return false;
@@ -130,7 +127,6 @@ public class AuthDaoImpl {
 
             String hashPassword =
                     BCrypt.hashpw(theUser.getPassword(), BCrypt.gensalt());
-            System.out.println(hashPassword);
             myStmt.setString(1, theUser.getName());
             myStmt.setString(2, hashPassword);
             myStmt.setInt(3, theUser.getStudentID());
