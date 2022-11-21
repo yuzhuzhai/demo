@@ -44,7 +44,17 @@
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <h3 class="text-center mb-5" style="color: white">Your current courses list for this semester: </h3>
-                                        <%List<Course> theCourses = (List<Course>) request.getAttribute("COURSE_LIST");%>
+                                        <%
+                                            String theSemester= (String) request.getAttribute("THE_SEMESTER");
+                                            List<Course> theCourses = (List<Course>) request.getAttribute("COURSE_LIST");
+                                            for (int i = 0, len = theCourses.size(); i < len; i++) {
+                                                if(!theCourses.get(i).getSemester().equals(theSemester)){
+                                                    theCourses.remove(i);
+                                                    len--;
+                                                    i--;
+                                                }
+                                            }
+                                        %>
                                         <table id="studentCourseTable" class="table">
                                             <thead>
                                                 <tr>
@@ -52,6 +62,13 @@
                                                 <th>Course ID</th>
                                                 <th>Title</th>
                                                 <th>Semester</th>
+                                                <th>Days</th>
+                                                <th>Time</th>
+                                                <th>Instructor</th>
+                                                <th>Room</th>
+                                                <th>Start Date</th>
+                                                <th>End Date</th>
+                                                <th>Admin ID</th>
                                                 </tr>
                                             </thead>
                                             <% for (Course currentCourse : theCourses) { %>
@@ -62,6 +79,13 @@
                                                 <td> <%= currentCourse.getID() %> </td>
                                                 <td> <%= currentCourse.getTitle() %> </td>
                                                 <td> <%= currentCourse.getSemester() %> </td>
+                                                <td> <%= currentCourse.getDays() %> </td>
+                                                <td> <%= currentCourse.getTime() %> </td>
+                                                <td> <%= currentCourse.getInstructor() %> </td>
+                                                <td> <%= currentCourse.getRoom() %> </td>
+                                                <td> <%= currentCourse.getStartDate() %> </td>
+                                                <td> <%= currentCourse.getEndDate() %> </td>
+                                                <td> <%= currentCourse.getAdminID() %> </td>
                                             </tr>
                                             <% } %>
                                         </table>
@@ -95,22 +119,27 @@
         let rowFirstTd = obj.parentNode; // get first td node (which include <input> element)
         let row = rowFirstTd.parentNode; // get tr node
         let courseID = row.children[1].innerHTML; // get course ID
+        let endDate = new Date(row.children[9].innerHTML); // get end date
+        let today = new Date();
+        console.log(endDate)
+
         if(obj.checked) {
             dropButton.removeAttribute("disabled");
             if(registrationIDArray.length < 5){
-                if(!registrationIDArray.includes(courseID)){
+                if(!registrationIDArray.includes(courseID) && today < endDate){
                     registrationIDArray[i] = courseID;
                     i++;
                     let input = document.createElement("input");
+                    input.setAttribute("id",courseID);
                     input.setAttribute("type","text");
                     input.setAttribute("name","courseID");
                     input.setAttribute('value',courseID);
                     input.setAttribute('readonly', 'true');
                     dropForm.insertBefore(input, dropButton);
                 } else{
-                    console.log("already added!");
+                    alert("Course ended, cannot be dropped!");
                 }
-                console.log(courseID);
+                console.log(registrationIDArray);
             } else {
                 console.log("Already have 5 courses.");
             }
@@ -129,7 +158,7 @@
     function isDisabled(){
         if(registrationIDArray.length === 0){
             event.preventDefault();
-            alert("Please select course before register.");
+            alert("Please select course before drop.");
         } else {
             return true;
         }
