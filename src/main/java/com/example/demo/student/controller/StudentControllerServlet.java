@@ -180,6 +180,13 @@ public class StudentControllerServlet extends HttpServlet {
 
 //		IMPORTANT: check this code later
 		List<Course> enrolledCoursesForTheStudent = courseDaoImpl.getStudentEnrollCourseOnSemester(theStudentIdInt);
+        for (int i = 0, len = enrolledCoursesForTheStudent.size(); i < len; i++) {
+            if(!enrolledCoursesForTheStudent.get(i).getSemester().equals(theSemester)){
+                enrolledCoursesForTheStudent.remove(i);
+                len--;
+                i--;
+            }
+        }
 
 		request.setAttribute("THE_STUDENT", theStudent);
 		request.setAttribute("THE_SEMESTER", theSemester);
