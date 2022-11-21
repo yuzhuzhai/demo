@@ -49,7 +49,7 @@
 
                                 <div class="my-4">
 
-                                    <h2 class="text-center mb-5">Enrollment System</h2>
+                                    <h2 class="text-center mb-5">Log In</h2>
 
                                     <!-- Pills navs -->
                                     <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
@@ -112,7 +112,7 @@
 
                                         <div class="tab-pane" id="Register" role="tabpanel"
                                              aria-labelledby="tab-register">
-                                            <form action="CourseControllerServlet" method="GET">
+                                            <form action="AuthControllerServlet" method="GET">
                                                 <input type="hidden" name="command" value="ADMIN" />
 
                                                 <p class="text-center">Log In as a admin</p>
@@ -128,7 +128,7 @@
                                                 <!-- Name input -->
                                                 <div class="form-outline mb-4">
                                                     <div class="form-outline form-white">
-                                                        <input name="name" type="text" class="form-control"/>
+                                                        <input name="Name" type="text" class="form-control"/>
                                                         <label class="form-label" >Name</label>
                                                     </div>
                                                 </div>
@@ -136,15 +136,15 @@
                                                 <!-- Username input -->
                                                 <div class="form-outline mb-4">
                                                     <div class="form-outline form-white">
-                                                        <input name="password" type="text" class="form-control"/>
+                                                        <input name="Password" type="text" class="form-control"/>
                                                         <label class="form-label"
                                                                >Password</label>
                                                     </div>
                                                 </div>
 
                                                 <!-- Submit button -->
-                                                <button type="submit" class="btn btn-primary btn-block mb-3">Add
-                                                    course
+                                                <button type="submit" class="btn btn-primary btn-block mb-3">
+                                                    LogIn
                                                 </button>
 
                                             </form>

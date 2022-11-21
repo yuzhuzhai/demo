@@ -88,7 +88,7 @@ public class AuthControllerServlet extends HttpServlet {
             System.out.println(user);
             authDaoImpl.register(user);
             RequestDispatcher dispatcher =
-                    request.getRequestDispatcher("/login.jsp");
+                    request.getRequestDispatcher("/logInForAll.jsp");
             dispatcher.forward(request, response);
         } catch (Exception exc) {
             throw new ServletException(exc);
@@ -122,7 +122,7 @@ public class AuthControllerServlet extends HttpServlet {
                             HttpServletResponse response)
             throws Exception {
         List<User> users = new ArrayList<>();
-        int ID = Integer.parseInt(request.getParameter("ID"));
+        int ID = Integer.parseInt(request.getParameter("adminID"));
         String name = request.getParameter("Name");
         String password = request.getParameter("Password");
         User user = new User(ID, name, password);
