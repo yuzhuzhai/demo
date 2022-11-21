@@ -89,7 +89,7 @@
                                         <% for (Course currentCourse : theCourses) { %>
                                         <tr>
                                             <td>
-                                                <input type="checkbox" name="selectCourse" onclick="isSelect(this)"></input>
+                                                <input type="checkbox" name="selectCourse" onclick="checkRegisterTime(this)"></input>
                                             </td>
                                             <td> <%= currentCourse.getID() %> </td>
                                             <td> <%= currentCourse.getTitle() %> </td>
@@ -131,13 +131,14 @@
     let i = 0;
     let registerForm = document.getElementById('registerForm');
     let registerButton = document.getElementById('registerButton');
+    let numOfCoursesCanEnroll = <%=(5 - theEnrolledCourses.size())%>;
     function isSelect(obj){
         let rowFirstTd = obj.parentNode; // get first td node (which include <input> element)
         let row = rowFirstTd.parentNode; // get tr node
         let courseID = row.children[1].innerHTML; // get course ID
         if(obj.checked) {
             // registerButton.removeAttribute("disabled");
-            if(courseArray.length < 5){
+            if(courseArray.length < numOfCoursesCanEnroll){
                 if(!courseArray.includes(courseID)){
                     courseArray[i] = courseID;
                     i++;
@@ -153,6 +154,7 @@
                 }
                 console.log(courseArray);
             } else {
+                alert("Too many courses! You cannot register more than 5 courses for a semester.");
                 console.log("Already have 5 courses.");
             }
         } else {
@@ -164,6 +166,26 @@
                 registerForm.removeChild(cancelInput);
             }
             console.log("canceled.");
+        }
+    }
+
+    function checkRegisterTime(obj){
+        let n = "2022-09-01";
+        // let d =  new Date();
+        // let n = d.toLocaleDateString(); // get local time
+        let rowFirstTd = obj.parentNode; // get first td node (which include <input> element)
+        let row = rowFirstTd.parentNode; // get tr node
+        let courseStartDate = row.children[8].innerHTML;
+        let startDate = new Date(courseStartDate);
+        let tempTime = startDate.getTime() + 8*(24*3600*1000);
+        let allowEnrollDate = new Date(tempTime);
+        if((new Date(n.replace(/-/g,"\/")))>allowEnrollDate){
+            obj.click(()=>{
+                return false;
+            });
+            alert("It is too late to register this course in the semester.");
+        } else {
+            isSelect(obj);
         }
     }
 
