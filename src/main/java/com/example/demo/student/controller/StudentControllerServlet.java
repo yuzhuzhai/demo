@@ -150,15 +150,43 @@ public class StudentControllerServlet extends HttpServlet {
 
 		Student theStudent = studentDaoImpl.getStudent(theStudentId);
 
+        int theStudentIdInt = Integer.parseInt(theStudentId);
+
 //		IMPORTANT: check this code later
 		List<Course> theSemesterCourse = courseDaoImpl.getCourses();
-
+        for (int i = 0, len = theSemesterCourse.size(); i < len; i++) {
+            if(!theSemesterCourse.get(i).getSemester().equals(theSemester)){
+                theSemesterCourse.remove(i);
+                len--;
+                i--;
+            }
+        }
+        List<Course> enrolledCoursesForTheStudent = courseDaoImpl.getStudentEnrollCourseOnSemester(theStudentIdInt);
+        for (int i = 0, len = enrolledCoursesForTheStudent.size(); i < len; i++) {
+            if(!enrolledCoursesForTheStudent.get(i).getSemester().equals(theSemester)){
+                enrolledCoursesForTheStudent.remove(i);
+                len--;
+                i--;
+            }
+        }
+        // check if the student already enrolled the course, if so, don't add it in theSemesterCourse list
+//        for (int i = 0, len = theSemesterCourse.size(); i < len; i++) {
+//            for (int j = 0, len2 = enrolledCoursesForTheStudent.size(); j < len2; j++) {
+//                if(enrolledCoursesForTheStudent.get(i).getID() == (enrolledCoursesForTheStudent.get(j).getID())){
+//                    theSemesterCourse.remove(i);
+//                    len--;
+//                    i--;
+//                    break;
+//                }
+//            }
+//        }
 
 		// place student in the request attribute
 		request.setAttribute("THE_STUDENT", theStudent);
 		request.setAttribute("THE_SEMESTER", theSemester);
 
 		request.setAttribute("COURSE_LIST", theSemesterCourse);
+        request.setAttribute("ENROLLED_COURSE_LIST", enrolledCoursesForTheStudent);
 
 		// send to jsp page: update-student-form.jsp
 		RequestDispatcher dispatcher =
@@ -180,6 +208,13 @@ public class StudentControllerServlet extends HttpServlet {
 
 //		IMPORTANT: check this code later
 		List<Course> enrolledCoursesForTheStudent = courseDaoImpl.getStudentEnrollCourseOnSemester(theStudentIdInt);
+        for (int i = 0, len = enrolledCoursesForTheStudent.size(); i < len; i++) {
+            if(!enrolledCoursesForTheStudent.get(i).getSemester().equals(theSemester)){
+                enrolledCoursesForTheStudent.remove(i);
+                len--;
+                i--;
+            }
+        }
 
 		request.setAttribute("THE_STUDENT", theStudent);
 		request.setAttribute("THE_SEMESTER", theSemester);

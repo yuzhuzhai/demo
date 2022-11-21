@@ -68,6 +68,59 @@ public class CourseDaoImpl {
         }
     }
 
+    public Course getCourse(int courseID) throws Exception {
+
+        Course theCourse = null;
+
+        Connection myConn = null;
+        PreparedStatement myStmt = null;
+        ResultSet myRs = null;
+
+        try {
+            // get a connection
+            myConn = dataSource.getConnection();
+
+            // create sql statement
+            String sql = "select * from course where id=?";
+
+            // create prepared statement
+            myStmt = myConn.prepareStatement(sql);
+
+            // set params
+            myStmt.setInt(1, courseID);
+
+            // execute statement
+            myRs = myStmt.executeQuery();
+
+            // process result set
+            if (myRs.next()) {
+
+                // retrieve data from result set row
+                int id = myRs.getInt("id");
+                String title = myRs.getString("title");
+                String semester = myRs.getString("semester");
+                String days = myRs.getString("days");
+                String time = myRs.getString("time");
+                String instructor = myRs.getString("instructor");
+                String room = myRs.getString("room");
+                Date startDate = myRs.getDate("startDate");
+                Date endDate = myRs.getDate("endDate");
+                int adminID = myRs.getInt("adminID");
+
+                theCourse = new Course(id, title, semester, days, time, instructor,
+                                room, startDate, endDate, adminID);
+
+            }else {
+                throw new Exception("Could not find course id: " + courseID);
+            }
+
+            return theCourse;
+        } finally {
+            // close JDBC objects
+            close(myConn, myStmt, myRs);
+        }
+    }
+
 
     public List<Course> getCoursesByStudent(int studentId) throws Exception {
 
