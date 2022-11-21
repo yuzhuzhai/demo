@@ -44,17 +44,7 @@
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <h3 class="text-center mb-5" style="color: white">Your current courses list for this semester: </h3>
-                                        <%
-                                            String theSemester= (String) request.getAttribute("THE_SEMESTER");
-                                            List<Course> theCourses = (List<Course>) request.getAttribute("COURSE_LIST");
-                                            for (int i = 0, len = theCourses.size(); i < len; i++) {
-                                                if(!theCourses.get(i).getSemester().equals(theSemester)){
-                                                    theCourses.remove(i);
-                                                    len--;
-                                                    i--;
-                                                }
-                                            }
-                                        %>
+                                        <%List<Course> theCourses = (List<Course>) request.getAttribute("COURSE_LIST");%>
                                         <table id="studentCourseTable" class="table">
                                             <thead>
                                                 <tr>
