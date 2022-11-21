@@ -121,7 +121,6 @@
 
                                                 <p class="text-center">Log In as a admin</p>
 
-
                                                 <div class="form-outline mb-4">
                                                     <div class="form-outline form-white">
                                                         <input name="adminID" type="number" class="form-control"/>
@@ -151,7 +150,7 @@
                                                     LogIn
                                                 </button>
                                                 <div class="text-center">
-                                                    <p>Do't have account? <a href="./signUp.jsp">Sign Up</a></p>
+                                                    <p>Don't have account? <a href="./signUp.jsp">Sign Up</a></p>
                                                 </div>
                                             </form>
                                         </div>

@@ -48,9 +48,9 @@
                             <div class="card-body p-5 text-white">
                                 <div class="my-4">
                                     <%
-                                        if (theUser != null )
+                                        if (request.getSession().getAttribute("adminName") != null )
                                             { %>
-                                    <h2 class="text-center mb-5">Welcome, <%=theUser.get(0).getName() %></h2>
+                                    <h2 class="text-center mb-5">Welcome, <%=request.getSession().getAttribute("adminName") %></h2>
 
                                         <div class="tab-pane" id="Register" role="tabpanel"
                                              aria-labelledby="tab-register">

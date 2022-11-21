@@ -126,10 +126,10 @@ public class AuthControllerServlet extends HttpServlet {
         String name = request.getParameter("Name");
         String password = request.getParameter("Password");
         User adminUser = new User(name, password, adminID);
-        System.out.println(adminUser);
-        System.out.println(authDaoImpl.checkAdminAuth(adminUser));
         if (authDaoImpl.checkAdminAuth(adminUser)) {
             users.add(adminUser);
+            request.getSession().setAttribute("adminName", request.getParameter  ("Name"));
+            request.getSession().setAttribute("adminID", request.getParameter  ("adminID"));
             request.setAttribute("USER", users);
             RequestDispatcher dispatcher =
                     request.getRequestDispatcher("/admin.jsp");
