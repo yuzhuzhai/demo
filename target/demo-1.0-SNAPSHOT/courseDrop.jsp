@@ -52,13 +52,6 @@
                                                 <th>Course ID</th>
                                                 <th>Title</th>
                                                 <th>Semester</th>
-                                                <th>Days</th>
-                                                <th>Time</th>
-                                                <th>Instructor</th>
-                                                <th>Room</th>
-                                                <th>Start Date</th>
-                                                <th>End Date</th>
-                                                <th>Admin ID</th>
                                                 </tr>
                                             </thead>
                                             <% for (Course currentCourse : theCourses) { %>
@@ -69,13 +62,6 @@
                                                 <td> <%= currentCourse.getID() %> </td>
                                                 <td> <%= currentCourse.getTitle() %> </td>
                                                 <td> <%= currentCourse.getSemester() %> </td>
-                                                <td> <%= currentCourse.getDays() %> </td>
-                                                <td> <%= currentCourse.getTime() %> </td>
-                                                <td> <%= currentCourse.getInstructor() %> </td>
-                                                <td> <%= currentCourse.getRoom() %> </td>
-                                                <td> <%= currentCourse.getStartDate() %> </td>
-                                                <td> <%= currentCourse.getEndDate() %> </td>
-                                                <td> <%= currentCourse.getAdminID() %> </td>
                                             </tr>
                                             <% } %>
                                         </table>
@@ -109,27 +95,22 @@
         let rowFirstTd = obj.parentNode; // get first td node (which include <input> element)
         let row = rowFirstTd.parentNode; // get tr node
         let courseID = row.children[1].innerHTML; // get course ID
-        let endDate = new Date(row.children[9].innerHTML); // get end date
-        let today = new Date();
-        console.log(endDate)
-
         if(obj.checked) {
             dropButton.removeAttribute("disabled");
             if(registrationIDArray.length < 5){
-                if(!registrationIDArray.includes(courseID) && today < endDate){
+                if(!registrationIDArray.includes(courseID)){
                     registrationIDArray[i] = courseID;
                     i++;
                     let input = document.createElement("input");
-                    input.setAttribute("id",courseID);
                     input.setAttribute("type","text");
                     input.setAttribute("name","courseID");
                     input.setAttribute('value',courseID);
                     input.setAttribute('readonly', 'true');
                     dropForm.insertBefore(input, dropButton);
                 } else{
-                    alert("Course ended, cannot be dropped!");
+                    console.log("already added!");
                 }
-                console.log(registrationIDArray);
+                console.log(courseID);
             } else {
                 console.log("Already have 5 courses.");
             }
@@ -148,7 +129,7 @@
     function isDisabled(){
         if(registrationIDArray.length === 0){
             event.preventDefault();
-            alert("Please select course before drop.");
+            alert("Please select course before register.");
         } else {
             return true;
         }

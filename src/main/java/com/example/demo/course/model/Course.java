@@ -15,6 +15,12 @@ public class Course {
     private Date endDate;
     private int adminID;
 
+    public Course(int ID, String title, String instructor) {
+        this.ID = ID;
+        this.title = title;
+        this.instructor = instructor;
+    }
+
     public String getTitle() {
         return title;
     }

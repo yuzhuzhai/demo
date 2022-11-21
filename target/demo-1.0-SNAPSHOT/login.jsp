@@ -12,7 +12,7 @@
     <title>Login Demo with JSP</title>
 </head>
 <body>
-<form method="post" action="validate.jsp">
+<form method="GET" action="AuthControllerServlet">
     <center>
         <table border="1" cellpadding="5" cellspacing="2">
             <thead>
@@ -30,9 +30,9 @@
                 <td><input type="password" name="password" required/></td>
             </tr>
             <tr>
-                <td colspan="2" align="center"><input type="submit" value="Login" />
+                <td colspan="2" align="center"><input type="submit" value="Login"/>
                     &nbsp;&nbsp;
-                    <input type="reset" value="Reset" />
+                    <input type="reset" value="Reset"/>
                 </td>
             </tr>
             </tbody>

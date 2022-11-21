@@ -11,7 +11,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>Assignment 1</title>
+    <title>Assignment 2</title>
     <!-- MDB icon -->
     <link rel="icon" href="img/mdb-favicon.ico" type="image/x-icon" />
     <!-- Font Awesome -->
@@ -65,9 +65,9 @@
                                                     role="tab"
                                                     aria-controls="pills-login"
                                                     aria-selected="true"
-                                                    onclick="openTab(event, 'Login')"
-                                            >Report 1</
-                                            >
+                                                    onclick="openTab(event, 'Login')">
+                                                Report 1
+                                            </button>
                                         </li>
                                         <li class="nav-item" role="presentation">
                                             <button
@@ -78,9 +78,9 @@
                                                     role="tab"
                                                     aria-controls="pills-register"
                                                     aria-selected="false"
-                                                    onclick="openTab(event, 'Register')"
-                                            >Report 2</
-                                            >
+                                                    onclick="openTab(event, 'Register')">
+                                                Report 2
+                                            </button>
                                         </li>
                                     </ul>
                                     <!-- Pills navs -->

@@ -13,13 +13,12 @@
 </head>
 <body>
 <h1> Don't have account or account doesn't exits? please signup before logIn </h1>
-<form action="reg-process.jsp" method="post">
-    First name :<input type="text" name="fname" />
-    Last name :<input type="text" name="lname" />
-    Email ID :<input type="text" name="email" />
-    User name :<input type="text" name="userid" />
-    password :<input type="password" name="password" />
-    <input type="submit" />
+<form action="AuthControllerServlet" method="POST">
+    name :<input type="text" name="Name"/>
+    password :<input type="text" name="Password"/>
+    role :<input type="text" name="Role"/>
+    id :<input type="int" name="ID"/>
+    <input type="submit"/>
 
 </form>
 </body>

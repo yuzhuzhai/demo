@@ -136,7 +136,7 @@ public class CourseDaoImpl {
 
             // create sql statement
             String sql =
-                    "SELECT course.title, course.instructor,registration.courseID FROM registration join course where course.ID =registration.courseID and registration.studentID = ?";
+                    "SELECT course.title, course.instructor,course.ID FROM registration join course where course.ID =registration.courseID and registration.studentID = ?";
 
             myStmt = myConn.prepareStatement(sql);
             myStmt.setInt(1, studentId);
@@ -148,20 +148,19 @@ public class CourseDaoImpl {
             while (myRs.next()) {
 
                 // retrieve data from result set row
-                int id = myRs.getInt("id");
+                int id = myRs.getInt("ID");
                 String title = myRs.getString("title");
-                String semester = myRs.getString("semester");
-                String days = myRs.getString("days");
-                String time = myRs.getString("time");
                 String instructor = myRs.getString("instructor");
-                String room = myRs.getString("room");
-                Date startDate = myRs.getDate("startDate");
-                Date endDate = myRs.getDate("endDate");
-                int adminID = myRs.getInt("adminID");
+//                String semester = myRs.getString("semester");
+//                String days = myRs.getString("days");
+//                String time = myRs.getString("time");
+//                String room = myRs.getString("room");
+//                Date startDate = myRs.getDate("startDate");
+//                Date endDate = myRs.getDate("endDate");
+//                int adminID = myRs.getInt("adminID");
 
                 Course tempCourse =
-                        new Course(id, title, semester, days, time, instructor,
-                                room, startDate, endDate, adminID);
+                        new Course(id, title, instructor);
 
                 // add it to the list of students
                 courses.add(tempCourse);

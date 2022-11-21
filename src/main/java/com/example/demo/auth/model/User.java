@@ -3,14 +3,20 @@ package com.example.demo.auth.model;
 public class User {
     private int ID;
     private String name;
+    private String role;
     private String password;
     private int studentID;
     private int adminID;
 
-    public User(int id, String name, String password) {
+    public User(int studentID, String name, String password) {
         this.name = name;
         this.password = password;
         this.studentID = studentID;
+    }
+
+    public User( String name, String password, int adminID) {
+        this.name = name;
+        this.password = password;
         this.adminID = adminID;
     }
 
@@ -23,6 +29,14 @@ public class User {
                 ", studentID=" + studentID +
                 ", adminID=" + adminID +
                 '}';
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public int getID() {
@@ -65,10 +79,11 @@ public class User {
         this.adminID = adminID;
     }
 
-    public User(String name, String password, int studentID, int adminID) {
+    public User(String name, String password, int studentID, int adminID, String role) {
         this.name = name;
         this.password = password;
         this.studentID = studentID;
         this.adminID = adminID;
+        this.role = role;
     }
 }
