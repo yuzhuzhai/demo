@@ -13,7 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -76,6 +78,7 @@ public class CourseControllerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
+
             // read the "command" parameter
             String theCommand = request.getParameter("command");
 
@@ -163,14 +166,34 @@ public class CourseControllerServlet extends HttpServlet {
 
     private void addRegistrationCourse(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
+        // get current time
+//        Timestamp date = new Timestamp(System.currentTimeMillis());
+//        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+//        String dateNow = df.format(date);
+//        System.out.println("System time: "+dateNow);
+//        String theCourseStartDate = "";
+
+        // read semester id from form data
+        String theSemester = request.getParameter("semester");
         // read student info from form data
         int studentID = Integer.parseInt(request.getParameter("stdID"));
         String[] courseIDArr = request.getParameterValues("courseID");
         for(String courseIDStr: courseIDArr){
             int courseID = Integer.parseInt(courseIDStr.trim());
+//            Course theCourse = courseDaoImpl.getCourse(courseID);
+//            theCourseStartDate = df.format(theCourse.getStartDate());
+//            if(df.parse(dateNow).getTime() < df.parse(theCourseStartDate).getTime()){}
             courseDaoImpl.addRegistrationCourse(studentID,courseID);
         }
+
         List<Course> enrolledCoursesForTheStudent = courseDaoImpl.getStudentEnrollCourseOnSemester(studentID);
+        for (int i = 0, len = enrolledCoursesForTheStudent.size(); i < len; i++) {
+            if(!enrolledCoursesForTheStudent.get(i).getSemester().equals(theSemester)){
+                enrolledCoursesForTheStudent.remove(i);
+                len--;
+                i--;
+            }
+        }
         request.setAttribute("ENROLLED_COURSE_LIST", enrolledCoursesForTheStudent);
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/register.jsp");
