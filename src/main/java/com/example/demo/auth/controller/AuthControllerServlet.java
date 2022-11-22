@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -72,20 +74,22 @@ public class AuthControllerServlet extends HttpServlet {
             throws ServletException, IOException {
         User user = null;
         try {
-            String name = request.getParameter("Name");
+            String firstName = request.getParameter("firstName");
+            String lastName = request.getParameter("lastName");
+            String address = request.getParameter("address");
+            String email = request.getParameter("email");
+            String phoneNumber = request.getParameter("phoneNumber");
+            Date DOB = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("bd"));
             String password = request.getParameter("Password");
             String role = request.getParameter("Role");
             int id = Integer.parseInt(request.getParameter("ID"));
-            System.out.println(role);
             if (role.equals("student")) {
-                System.out.println("student");
-                user = new User(name, password, id, 0, role);
+                user = new User(id, firstName, role, password, 0, lastName, address, email, phoneNumber, DOB);
             }
             if (role.equals("admin")) {
                 System.out.println("admin");
-                user = new User(name, password, 0, id, role);
+                user = new User(firstName, role, password, 0, lastName, address, email, phoneNumber, DOB, id);
             }
-            System.out.println(user);
             authDaoImpl.register(user);
             RequestDispatcher dispatcher =
                     request.getRequestDispatcher("/logInForAll.jsp");
@@ -102,14 +106,14 @@ public class AuthControllerServlet extends HttpServlet {
         int studentID = Integer.parseInt(request.getParameter("StdID"));
         String name = request.getParameter("Name");
         String password = request.getParameter("Password");
-        User user = new User(studentID, name, password);
+        User user = new User(name, studentID, password);
         System.out.println("ready go to student login dao");
         if (authDaoImpl.checkStdAuth(user)) {
             users.add(user);
-            System.out.println("ready pass student data to jap");
-            request.setAttribute("USER", users);
+            request.getSession().setAttribute("studentName", request.getParameter  ("Name"));
+            request.getSession().setAttribute("studentID", request.getParameter  ("StdID"));
             RequestDispatcher dispatcher =
-                    request.getRequestDispatcher("/home.jsp");
+                    request.getRequestDispatcher("/student.jsp");
             dispatcher.forward(request, response);
         } else {
             RequestDispatcher dispatcher =
@@ -125,12 +129,11 @@ public class AuthControllerServlet extends HttpServlet {
         int adminID = Integer.parseInt(request.getParameter("adminID"));
         String name = request.getParameter("Name");
         String password = request.getParameter("Password");
-        User adminUser = new User(name, password, adminID);
+        User adminUser = new User(name, adminID, password);
         if (authDaoImpl.checkAdminAuth(adminUser)) {
             users.add(adminUser);
             request.getSession().setAttribute("adminName", request.getParameter  ("Name"));
             request.getSession().setAttribute("adminID", request.getParameter  ("adminID"));
-            request.setAttribute("USER", users);
             RequestDispatcher dispatcher =
                     request.getRequestDispatcher("/admin.jsp");
             dispatcher.forward(request, response);

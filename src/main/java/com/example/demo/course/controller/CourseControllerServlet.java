@@ -113,11 +113,8 @@ public class CourseControllerServlet extends HttpServlet {
         String time = request.getParameter("Time");
         String instructor = request.getParameter("Instructor");
         String room = request.getParameter("Room");
-        System.out.println(request.getParameter("StartDate"));
-        System.out.println(new SimpleDateFormat("yyyy/MM/dd").parse(request.getParameter("StartDate")));
-        Date startDate = new SimpleDateFormat("yyyy/MM/dd").parse(request.getParameter("StartDate"));
-        System.out.println(startDate);
-        Date endDate = new SimpleDateFormat("yyyy/MM/dd").parse(request.getParameter("EndDate"));
+        Date startDate = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("StartDate"));
+        Date endDate = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("EndDate"));
 
         int adminID = Integer.parseInt(request.getParameter("AdminId"));
 

@@ -105,8 +105,8 @@
                                                     <label class="form-label">Password</label>
                                                 </div>
 
-                                                <button type="submit" class="btn btn-primary btn-block mb-3">Add
-                                                    course
+                                                <button type="submit" class="btn btn-primary btn-block mb-3">
+                                                   Log In
                                                 </button>
                                                 <div class="text-center">
                                                     <p>Don't have account? <a href="./signUp.jsp">Sign Up</a></p>

@@ -28,10 +28,6 @@
     </style>
 </head>
 
-<%
-    List<User> theUser =
-            (List<User>) request.getAttribute("USER");
-%>
 <!-- MDB -->
 <script type="text/javascript" src="./js/mdb.min.js"></script>
 <!-- Custom scripts -->
@@ -119,7 +115,7 @@
 
                                                 <div class="form-outline mb-4">
                                                     <div class="form-outline form-white">
-                                                        <input name="StartDate" type="text" class="form-control"/>
+                                                        <input name="StartDate" type="date" class="form-control"/>
                                                         <label class="form-label">Start
                                                             Date</label>
                                                     </div>
@@ -127,7 +123,7 @@
 
                                                 <div class="form-outline mb-4">
                                                     <div class="form-outline form-white">
-                                                        <input name="EndDate" type="text" class="form-control"/>
+                                                        <input name="EndDate" type="date" class="form-control"/>
                                                         <label class="form-label">End
                                                             Date</label>
                                                     </div>
@@ -157,7 +153,6 @@
                             <div class="text-center">
                                 <p>Go Back <a href="./logInForAll.jsp">Login page</a></p>
                             </div>
-
                             <% } %>
                         </div>
                     </div>

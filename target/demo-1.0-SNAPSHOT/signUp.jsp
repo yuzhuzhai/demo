@@ -39,13 +39,46 @@
 
                                         <div class="form-outline mb-4">
                                             <div class="form-outline form-white">
-                                                <input type="text" name="Name" class="form-control"/>
+                                                <input type="text" name="firstName" class="form-control"/>
                                                 <label class="form-label"
-                                                >name</label>
+                                                >first name</label>
                                             </div>
                                         </div>
 
-
+                                        <div class="form-outline mb-4">
+                                            <div class="form-outline form-white">
+                                                <input type="text" name="lastName" class="form-control"/>
+                                                <label class="form-label"
+                                                >last name</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-outline mb-4">
+                                            <div class="form-outline form-white">
+                                                <input type="text" name="address" class="form-control"/>
+                                                <label class="form-label"
+                                                >address</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-outline mb-4">
+                                            <div class="form-outline form-white">
+                                                <input type="text" name="email" class="form-control"/>
+                                                <label class="form-label"
+                                                >email</label>
+                                            </div>
+                                        </div>  <div class="form-outline mb-4">
+                                        <div class="form-outline form-white">
+                                            <input type="text" name="phoneNumber" class="form-control"/>
+                                            <label class="form-label"
+                                            >phone number</label>
+                                        </div>
+                                    </div>
+                                        <div class="form-outline mb-4">
+                                            <div class="form-outline form-white">
+                                                <input type="date" name="bd" class="form-control"/>
+                                                <label class="form-label"
+                                                >date of birth</label>
+                                            </div>
+                                        </div>
                                         <div class="form-outline mb-4">
                                             <div class="form-outline form-white">
                                                 <input type="text" name="Password" class="form-control"/>
@@ -69,6 +102,7 @@
                                                 >id</label>
                                             </div>
                                         </div>
+
                                         <button type="submit" class="btn btn-primary btn-block mb-3">
                                             Sign Up
                                         </button>
