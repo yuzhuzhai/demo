@@ -67,7 +67,7 @@
                       <% } %>
                     </table>
                     <br/><br/><br/>
-                    <a href="./home.jsp" class="btn btn-primary">Go Back</a>
+                    <a href="./student.jsp" class="btn btn-primary">Go Back</a>
                     </h3>
                   </div>
                 </div>

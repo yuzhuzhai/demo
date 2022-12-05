@@ -43,8 +43,8 @@ public class StudentDaoImpl {
 
 				// retrieve data from result set row
 				int id = myRs.getInt("id");
-				String firstName = myRs.getString("first_name");
-				String lastName = myRs.getString("last_name");
+				String firstName = myRs.getString("firstName");
+				String lastName = myRs.getString("lastName");
 				String email = myRs.getString("email");
 
 				// create new student object
@@ -93,7 +93,7 @@ public class StudentDaoImpl {
 
 			// create sql for insert
 			String sql = "insert into student "
-					   + "(first_name, last_name, email) "
+					   + "(firstName, lastName, email) "
 					   + "values (?, ?, ?)";
 
 			myStmt = myConn.prepareStatement(sql);
@@ -142,8 +142,8 @@ public class StudentDaoImpl {
 
 			// retrieve data from result set row
 			if (myRs.next()) {
-				String firstName = myRs.getString("first_name");
-				String lastName = myRs.getString("last_name");
+				String firstName = myRs.getString("firstName");
+				String lastName = myRs.getString("lastName");
 				String email = myRs.getString("email");
 
 				// use the studentId during construction
@@ -218,7 +218,7 @@ public class StudentDaoImpl {
 
 			// create SQL update statement
 			String sql = "update student "
-						+ "set first_name=?, last_name=?, email=? "
+						+ "set firstName=?, lastName=?, email=? "
 						+ "where id=?";
 
 			// prepare statement
