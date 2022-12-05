@@ -1,6 +1,6 @@
 package com.example.demo.auth.dao;
 
-import com.example.demo.auth.model.User;
+import com.example.demo.auth.model.Person;
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.sql.DataSource;
@@ -20,7 +20,7 @@ public class AuthDaoImpl {
         dataSource = theDataSource;
     }
 
-    public boolean checkStdAuth(User theUser) throws Exception {
+    public boolean checkStdAuth(Person thePerson) throws Exception {
 
         Connection myConn = null;
         PreparedStatement myStmt = null;
@@ -41,10 +41,10 @@ public class AuthDaoImpl {
                 String sqlPassword = myRs.getString("password");
                 String sqlName = myRs.getString("firstName");
                 int sqlStdId = myRs.getInt("studentId");
-                String name = theUser.getFirstName();
-                int stdId = theUser.getStudentID();
+                String name = thePerson.getFirstName();
+                int stdId = thePerson.getStudentID();
 
-                if (BCrypt.checkpw(theUser.getPassword(), sqlPassword) &&
+                if (BCrypt.checkpw(thePerson.getPassword(), sqlPassword) &&
                         sqlName.equals(name) && sqlStdId == stdId) {
                     return true;
                 }
@@ -56,7 +56,7 @@ public class AuthDaoImpl {
         }
     }
 
-    public boolean checkAdminAuth(User adminUser) throws Exception {
+    public boolean checkAdminAuth(Person adminPerson) throws Exception {
 
         Connection myConn = null;
         PreparedStatement myStmt = null;
@@ -77,10 +77,10 @@ public class AuthDaoImpl {
                 String sqlPassword = myRs.getString("password");
                 String sqlName = myRs.getString("firstName");
                 int sqlAdminId = myRs.getInt("adminId");
-                String name = adminUser.getFirstName();
-                int adminId = adminUser.getAdminID();
+                String name = adminPerson.getFirstName();
+                int adminId = adminPerson.getAdminID();
 
-                if (BCrypt.checkpw(adminUser.getPassword(), sqlPassword) &&
+                if (BCrypt.checkpw(adminPerson.getPassword(), sqlPassword) &&
                         sqlName.equals(name) && sqlAdminId == adminId) {
                     return true;
                 }
@@ -111,18 +111,18 @@ public class AuthDaoImpl {
         }
     }
 
-    public void register(User theUser) throws Exception {
+    public void register(Person thePerson) throws Exception {
 
-        if (theUser.getStudentID() == 0) {
-            registerAdmin(theUser);
+        if (thePerson.getStudentID() == 0) {
+            registerAdmin(thePerson);
         }
-        if (theUser.getAdminID() == 0) {
-            registerStudent(theUser);
+        if (thePerson.getAdminID() == 0) {
+            registerStudent(thePerson);
         }
-       registerUser(theUser);
+       registerUser(thePerson);
     }
 
-    public void registerStudent(User theUser) throws Exception {
+    public void registerStudent(Person thePerson) throws Exception {
 
         Connection myConn = null;
         PreparedStatement myStmt = null;
@@ -136,14 +136,14 @@ public class AuthDaoImpl {
                             "VALUES (?,?, ?, ?, ?, ?, ?)";
             myStmt = myConn.prepareStatement(sql);
 
-            myStmt.setInt(1, theUser.getStudentID());
-            myStmt.setString(2, theUser.getFirstName());
-            myStmt.setString(3, theUser.getLastName());
-            myStmt.setString(4, theUser.getEmail());
-            myStmt.setString(5, theUser.getAddress());
-            myStmt.setString(6, theUser.getPhoneNumber());
+            myStmt.setInt(1, thePerson.getStudentID());
+            myStmt.setString(2, thePerson.getFirstName());
+            myStmt.setString(3, thePerson.getLastName());
+            myStmt.setString(4, thePerson.getEmail());
+            myStmt.setString(5, thePerson.getAddress());
+            myStmt.setString(6, thePerson.getPhoneNumber());
             myStmt.setDate(7,  java.sql.Date.valueOf(
-                    theUser.getDOB().toInstant().atZone(
+                    thePerson.getDOB().toInstant().atZone(
                             ZoneId.systemDefault()).toLocalDate()));
 
             myStmt.execute();
@@ -152,7 +152,7 @@ public class AuthDaoImpl {
         }
     }
 
-    public void registerAdmin(User theUser) throws Exception {
+    public void registerAdmin(Person thePerson) throws Exception {
 
         Connection myConn = null;
         PreparedStatement myStmt = null;
@@ -166,14 +166,14 @@ public class AuthDaoImpl {
                             "VALUES (?,?, ?, ?, ?, ?, ?)";
             myStmt = myConn.prepareStatement(sql);
 
-            myStmt.setInt(1, theUser.getAdminID());
-            myStmt.setString(2, theUser.getFirstName());
-            myStmt.setString(3, theUser.getLastName());
-            myStmt.setString(5, theUser.getEmail());
-            myStmt.setString(4, theUser.getAddress());
-            myStmt.setString(6, theUser.getPhoneNumber());
+            myStmt.setInt(1, thePerson.getAdminID());
+            myStmt.setString(2, thePerson.getFirstName());
+            myStmt.setString(3, thePerson.getLastName());
+            myStmt.setString(5, thePerson.getEmail());
+            myStmt.setString(4, thePerson.getAddress());
+            myStmt.setString(6, thePerson.getPhoneNumber());
             myStmt.setDate(7,  java.sql.Date.valueOf(
-                    theUser.getDOB().toInstant().atZone(
+                    thePerson.getDOB().toInstant().atZone(
                             ZoneId.systemDefault()).toLocalDate()));
 
             myStmt.execute();
@@ -182,7 +182,7 @@ public class AuthDaoImpl {
         }
     }
 
-    public void registerUser(User theUser) throws Exception {
+    public void registerUser(Person thePerson) throws Exception {
         Connection myConn = null;
         PreparedStatement myStmt = null;
 
@@ -198,17 +198,17 @@ public class AuthDaoImpl {
 
 
             String hashPassword =
-                    BCrypt.hashpw(theUser.getPassword(), BCrypt.gensalt());
-            myStmt.setString(1, theUser.getFirstName());
-            myStmt.setString(2, theUser.getLastName());
-            myStmt.setString(3, theUser.getAddress());
-            myStmt.setString(4, theUser.getEmail());
-            myStmt.setString(5, theUser.getPhoneNumber());
+                    BCrypt.hashpw(thePerson.getPassword(), BCrypt.gensalt());
+            myStmt.setString(1, thePerson.getFirstName());
+            myStmt.setString(2, thePerson.getLastName());
+            myStmt.setString(3, thePerson.getAddress());
+            myStmt.setString(4, thePerson.getEmail());
+            myStmt.setString(5, thePerson.getPhoneNumber());
             myStmt.setString(6, hashPassword);
-            myStmt.setInt(7, theUser.getStudentID());
-            myStmt.setInt(8, theUser.getAdminID());
+            myStmt.setInt(7, thePerson.getStudentID());
+            myStmt.setInt(8, thePerson.getAdminID());
             myStmt.setDate(9,  java.sql.Date.valueOf(
-                    theUser.getDOB().toInstant().atZone(
+                    thePerson.getDOB().toInstant().atZone(
                             ZoneId.systemDefault()).toLocalDate()));
 
             myStmt.execute();

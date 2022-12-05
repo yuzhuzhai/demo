@@ -1,7 +1,7 @@
 package com.example.demo.auth.controller;
 
 import com.example.demo.auth.dao.AuthDaoImpl;
-import com.example.demo.auth.model.User;
+import com.example.demo.auth.model.Person;
 
 import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
@@ -72,7 +72,7 @@ public class AuthControllerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response)
             throws ServletException, IOException {
-        User user = null;
+        Person person = null;
         try {
             String firstName = request.getParameter("firstName");
             String lastName = request.getParameter("lastName");
@@ -84,13 +84,13 @@ public class AuthControllerServlet extends HttpServlet {
             String role = request.getParameter("Role");
             int id = Integer.parseInt(request.getParameter("ID"));
             if (role.equals("student")) {
-                user = new User(id, firstName, role, password, 0, lastName, address, email, phoneNumber, DOB);
+                person = new Person(id, firstName, role, password, 0, lastName, address, email, phoneNumber, DOB);
             }
             if (role.equals("admin")) {
                 System.out.println("admin");
-                user = new User(firstName, role, password, 0, lastName, address, email, phoneNumber, DOB, id);
+                person = new Person(firstName, role, password, 0, lastName, address, email, phoneNumber, DOB, id);
             }
-            authDaoImpl.register(user);
+            authDaoImpl.register(person);
             RequestDispatcher dispatcher =
                     request.getRequestDispatcher("/logInForAll.jsp");
             dispatcher.forward(request, response);
@@ -102,14 +102,14 @@ public class AuthControllerServlet extends HttpServlet {
     private void studentLogin(HttpServletRequest request,
                               HttpServletResponse response)
             throws Exception {
-        List<User> users = new ArrayList<>();
+        List<Person> people = new ArrayList<>();
         int studentID = Integer.parseInt(request.getParameter("StdID"));
         String name = request.getParameter("Name");
         String password = request.getParameter("Password");
-        User user = new User(name, studentID, password);
+        Person person = new Person(name, studentID, password);
         System.out.println("ready go to student login dao");
-        if (authDaoImpl.checkStdAuth(user)) {
-            users.add(user);
+        if (authDaoImpl.checkStdAuth(person)) {
+            people.add(person);
             request.getSession().setAttribute("studentName", request.getParameter  ("Name"));
             request.getSession().setAttribute("studentID", request.getParameter  ("StdID"));
             RequestDispatcher dispatcher =
@@ -125,15 +125,15 @@ public class AuthControllerServlet extends HttpServlet {
     private void adminLogin(HttpServletRequest request,
                             HttpServletResponse response)
             throws Exception {
-        List<User> users = new ArrayList<>();
+        List<Person> people = new ArrayList<>();
         int adminID = Integer.parseInt(request.getParameter("adminID"));
         String name = request.getParameter("Name");
         String password = request.getParameter("Password");
-        User adminUser = new User( adminID,name, password);
-        System.out.println(authDaoImpl.checkAdminAuth(adminUser));
-        System.out.println(adminUser);
-        if (authDaoImpl.checkAdminAuth(adminUser)) {
-            users.add(adminUser);
+        Person adminPerson = new Person( adminID,name, password);
+        System.out.println(authDaoImpl.checkAdminAuth(adminPerson));
+        System.out.println(adminPerson);
+        if (authDaoImpl.checkAdminAuth(adminPerson)) {
+            people.add(adminPerson);
             request.getSession().setAttribute("adminName", request.getParameter  ("Name"));
             request.getSession().setAttribute("adminID", request.getParameter  ("adminID"));
             RequestDispatcher dispatcher =

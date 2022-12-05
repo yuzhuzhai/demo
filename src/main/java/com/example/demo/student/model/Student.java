@@ -1,8 +1,10 @@
 package com.example.demo.student.model;
 
+import com.example.demo.auth.model.Person;
+
 import java.util.Date;
 
-public class Student {
+public class Student extends Person {
 
 	private int id;
 	private String firstName;
@@ -15,6 +17,7 @@ public class Student {
 	public Student(int id, String firstName, String lastName,
 				   String email, String address, String phoneNumber,
 				   Date DOB) {
+		super();
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;

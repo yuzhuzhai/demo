@@ -2,7 +2,7 @@ package com.example.demo.auth.model;
 
 import java.util.Date;
 
-public class User {
+public class Person {
     private int ID;
     private String firstName;
     private String role;
@@ -15,21 +15,21 @@ public class User {
     private String phoneNumber;
     private Date DOB;
 
-    public User(String firstName, int studentID,String password) {
+    public Person(String firstName, int studentID, String password) {
         this.firstName = firstName;
         this.studentID = studentID;
         this.password = password;
     }
-    public User(int adminID, String firstName,String password) {
+    public Person(int adminID, String firstName, String password) {
         this.firstName = firstName;
         this.adminID = adminID;
         this.password = password;
     }
 
-    public User(String firstName, String role, String password,
-                int studentID, String lastName,
-                String address, String email, String phoneNumber,
-                Date DOB, int adminID) {
+    public Person(String firstName, String role, String password,
+                  int studentID, String lastName,
+                  String address, String email, String phoneNumber,
+                  Date DOB, int adminID) {
         this.firstName = firstName;
         this.role = role;
         this.password = password;
@@ -42,10 +42,10 @@ public class User {
         this.DOB = DOB;
     }
 
-    public User(int studentID, String firstName, String role, String password,
-                int adminID, String lastName,
-                String address, String email, String phoneNumber,
-                Date DOB) {
+    public Person(int studentID, String firstName, String role, String password,
+                  int adminID, String lastName,
+                  String address, String email, String phoneNumber,
+                  Date DOB) {
         this.firstName = firstName;
         this.role = role;
         this.password = password;
@@ -56,6 +56,10 @@ public class User {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.DOB = DOB;
+    }
+
+    public Person() {
+
     }
 
     @Override
